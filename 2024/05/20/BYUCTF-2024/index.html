@@ -341,26 +341,24 @@
       
         <p>BYUCTF 2024!</p>
 <p>I participated in BYUCTF 2024, organized by BYU Cyberia, as a member of my institute’s club, InfoSecIITR. Our team secured 5th place globally. This writeup details the challenge I solved during the competition.</p>
-<h2 id="Forensics">Forensics</h2>
-<h3 id="Not-again-I’ve-been-BitLockered-out-of-my-own-computer">Not again! I’ve been BitLockered out of my own computer!</h3>
-<h4 id="Challenge-Description">Challenge Description</h4>
-<p>Install Bitlocker they said… it will protect your data they said… Well, now I don’t have access to any of my data because I forgot my password… again! Can you find my FVEK keys? I managed to capture my RAM so they should be in there</p>
+<h2 id="Forensics"><a href="#Forensics" class="headerlink" title="Forensics"></a>Forensics</h2><h3 id="Not-again-I’ve-been-BitLockered-out-of-my-own-computer"><a href="#Not-again-I’ve-been-BitLockered-out-of-my-own-computer" class="headerlink" title="Not again! I’ve been BitLockered out of my own computer!"></a>Not again! I’ve been BitLockered out of my own computer!</h3><h4 id="Challenge-Description"><a href="#Challenge-Description" class="headerlink" title="Challenge Description"></a>Challenge Description</h4><p>Install Bitlocker they said… it will protect your data they said… Well, now I don’t have access to any of my data because I forgot my password… again! Can you find my FVEK keys? I managed to capture my RAM so they should be in there</p>
 <p>Flag format - <code>byuctf&#123;key1_key2_key3&#125;</code> (order not significant)</p>
 <ul>
 <li>Mirror 1 - <a target="_blank" rel="noopener" href="https://byu.box.com/s/paexcd1t1er8bj435gg88i52q9ho8ftf">https://byu.box.com/s/paexcd1t1er8bj435gg88i52q9ho8ftf</a></li>
 <li>Mirror 2 - <a target="_blank" rel="noopener" href="https://drive.google.com/file/d/1EAYpFu0ULc4fGt2qNoJTaNvG4F9A8Vw7/view?usp=sharing">https://drive.google.com/file/d/1EAYpFu0ULc4fGt2qNoJTaNvG4F9A8Vw7/view?usp=sharing</a></li>
 </ul>
-<h4 id="Solution">Solution</h4>
-<p>As the user has captured the RAM, provided to us as the 20240327.mem file, I started searching for BitLocker. We found a plugin for the <a target="_blank" rel="noopener" href="https://github.com/volatilityfoundation/volatility">Volatility2</a> tool at <a target="_blank" rel="noopener" href="https://github.com/breppo/Volatility-BitLocker">GitHub Repo</a>. Since the file is also a memory file, it was straightforward to use the plugin.</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><p>As the user has captured the RAM, provided to us as the 20240327.mem file, I started searching for BitLocker. We found a plugin for the <a target="_blank" rel="noopener" href="https://github.com/volatilityfoundation/volatility">Volatility2</a> tool at <a target="_blank" rel="noopener" href="https://github.com/breppo/Volatility-BitLocker">GitHub Repo</a>. Since the file is also a memory file, it was straightforward to use the plugin.</p>
 <p>First, we needed the profile, so I used the following command in my terminal(using Volatility2):</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python2 vol.py -f 20240327.mem imageinfo</span><br></pre></td></tr></table></figure>
+
 <p>It took a lot of time about 7-8 minutes—but eventually, it provided the profile <code>Win10x64_19041</code>. After that, I used the BitLocker plugin:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python2 vol.py -f 20240327.mem --profile=Win10x64_19041 bitlocker</span><br></pre></td></tr></table></figure>
+
 <p>We got 5 FVEK keys, but after trying some possible combinations, I realized only Win8+ was accepted.</p>
 <p>I’ve provided the solution’s image.</p>
 <p><img src="/images/posts/2024-byuctf/not_again.png" alt="Solution"></p>
-<h4 id="Flags">Flags</h4>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">byuctf&#123;968052b6b247b32f6cfecce39749785f_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_91d4cceb5bf238cb3cb96367314773f5&#125;</span><br><span class="line">byuctf&#123;968052b6b247b32f6cfecce39749785f_91d4cceb5bf238cb3cb96367314773f5_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b&#125;</span><br><span class="line">byuctf&#123;91d4cceb5bf238cb3cb96367314773f5_968052b6b247b32f6cfecce39749785f_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b&#125;</span><br><span class="line">byuctf&#123;91d4cceb5bf238cb3cb96367314773f5_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_968052b6b247b32f6cfecce39749785f&#125;</span><br><span class="line">byuctf&#123;91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_91d4cceb5bf238cb3cb96367314773f5_968052b6b247b32f6cfecce39749785f&#125;</span><br><span class="line">byuctf&#123;91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_968052b6b247b32f6cfecce39749785f_91d4cceb5bf238cb3cb96367314773f5&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Flags"><a href="#Flags" class="headerlink" title="Flags"></a>Flags</h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">byuctf&#123;968052b6b247b32f6cfecce39749785f_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_91d4cceb5bf238cb3cb96367314773f5&#125;</span><br><span class="line">byuctf&#123;968052b6b247b32f6cfecce39749785f_91d4cceb5bf238cb3cb96367314773f5_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b&#125;</span><br><span class="line">byuctf&#123;91d4cceb5bf238cb3cb96367314773f5_968052b6b247b32f6cfecce39749785f_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b&#125;</span><br><span class="line">byuctf&#123;91d4cceb5bf238cb3cb96367314773f5_91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_968052b6b247b32f6cfecce39749785f&#125;</span><br><span class="line">byuctf&#123;91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_91d4cceb5bf238cb3cb96367314773f5_968052b6b247b32f6cfecce39749785f&#125;</span><br><span class="line">byuctf&#123;91c75f658705c36090f03779cacb056179e16316ee4af1e90d0f84e090b88d8b_968052b6b247b32f6cfecce39749785f_91d4cceb5bf238cb3cb96367314773f5&#125;</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -426,7 +424,7 @@
     
       <div>
         <span class="icon-brush"></span>
-        12.1k
+        12k
         &nbsp;|&nbsp;
         <span class="icon-coffee"></span>
         01:13
@@ -624,7 +622,7 @@
           url: "https://g4rud4kun.github.io/2024/05/20/BYUCTF-2024/",
           excerpt: "",
           description: "",
-          stripContent: "BYUCTF 2024! I participated in BYUCTF 2024, organized by BYU Cyberia, as a member of my institute’s club, InfoSecIITR. Our team secured 5th place globally. This writeup details the challenge I solved during the competition. Forensics Not again! I’ve ",
+          stripContent: "BYUCTF 2024! I participated in BYUCTF 2024, organized by BYU Cyberia, as a member of my institute’s club, InfoSecIITR. Our team secured 5th place globally. This writeup details the challenge I solved during the competition. ForensicsNot again! I’ve b",
           date: "Mon May 20 2024 20:40:36 GMT+0530",
           updated: "Fri Jan 17 2025 09:05:28 GMT+0530",
           cover: "/images/posts/2024-byuctf/byuctf-cover.png",
