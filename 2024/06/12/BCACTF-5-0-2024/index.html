@@ -1,0 +1,789 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+  <script src="https://www.googletagmanager.com/gtag/js?id=true"></script>
+  <script data-pjax>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+    gtag('config', 'true');
+  </script>
+
+
+  
+  <script>
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "true");
+  </script>
+
+
+  
+  <script async src="https://hm.baidu.com/hm.js?true"></script>
+  <script data-pjax>
+    var _hmt = _hmt || [];
+    _hmt.push(["_trackPageview", location.pathname]);
+  </script>
+
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_bq08450reo';window.REIMU_CONFIG.clipboard_tips = {"success":"Copy Successful","fail":"Copy Failed","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.code_block = {"expand":true};</script>
+  
+  <title>
+    BCACTF 5.0 2024 |
+    
+    g4rud4kun
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CSource%20Code%20Pro:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CSource%20Code%20Pro:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_bq08450reo.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="BCACTF 5.0! Returning for its fifth consecutive year, this high school CTF hosted by the Bergen County Academies offers challenges across various difficulty levels, catering to everyone from beginners">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BCACTF 5.0 2024">
+<meta property="og:url" content="https://g4rud4kun.github.io/2024/06/12/BCACTF-5-0-2024/index.html">
+<meta property="og:site_name" content="g4rud4kun">
+<meta property="og:description" content="BCACTF 5.0! Returning for its fifth consecutive year, this high school CTF hosted by the Bergen County Academies offers challenges across various difficulty levels, catering to everyone from beginners">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2024-bcactf/desc.png">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2024-bcactf/spec_melody.png">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2024-bcactf/peak.png">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2024-bcactf/desc_static.png">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2024-bcactf/frames.png">
+<meta property="article:published_time" content="2024-06-12T12:38:29.000Z">
+<meta property="article:modified_time" content="2025-01-17T03:31:29.645Z">
+<meta property="article:author" content="Harsh">
+<meta property="article:tag" content="forensics">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://g4rud4kun.github.io/images/posts/2024-bcactf/desc.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="g4rud4kun" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+        
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.css">
+
+      
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/">Home</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/archives">Archives</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/about">About</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="Search"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <picture></picture>
+    <img fetchpriority="high" src="/images/posts/2024-bcactf/bcactf_logo.png" alt="BCACTF 5.0 2024">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">BCACTF 5.0 2024</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="sidebar-left"  >
+          <aside id="sidebar">
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Forensics"><span class="toc-number">1.</span> <span class="toc-text">Forensics</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mysterious-Melody"><span class="toc-number">1.1.</span> <span class="toc-text">Mysterious Melody</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description"><span class="toc-number">1.1.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution"><span class="toc-number">1.1.2.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Flag"><span class="toc-number">1.1.3.</span> <span class="toc-text">Flag</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Static"><span class="toc-number">1.2.</span> <span class="toc-text">Static</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-2"><span class="toc-number">1.2.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-2"><span class="toc-number">1.2.2.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Flag-2"><span class="toc-number">1.2.3.</span> <span class="toc-text">Flag</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/saturo-running-v1-6-2.gif" data-sizes="auto" alt="Harsh" class="lazyload">
+  <div class="sidebar-author-name">Harsh</div>
+  <div class="sidebar-description">20 | CTF Player | IN</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:notsoharsh13@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/g4rud4kun itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://x.com/g4rud4kun itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-linkedin sidebar-social-icon">
+      <a href=https://www.linkedin.com/in/harsh-gupta-b5792a280 itemprop="url" target="_blank" aria-label="linkedin" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-discord sidebar-social-icon">
+      <a href=https://discordapp.com/users/509689286589939713 itemprop="url" target="_blank" aria-label="discord" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  <!-- 
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+   -->
+</div>
+</div>
+      
+      <!-- 
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+       -->
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+</aside>
+
+          <section id="main"><article id="post-BCACTF-5-0-2024" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2024/06/12/BCACTF-5-0-2024/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2024-06-12T12:38:29.000Z" itemprop="datePublished">2024-06-12</time>
+    <time style="display: none;" id="post-update-time">2025-01-17</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CTF-Writeups/" data-aos="zoom-in">CTF-Writeups</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <p>BCACTF 5.0!</p>
+<p>Returning for its fifth consecutive year, this high school CTF hosted by the Bergen County Academies offers challenges across various difficulty levels, catering to everyone from beginners to seasoned CTF veterans.</p>
+<p>I had the opportunity to participate in BCACTF 2025 as a member of my institute’s club, InfoSecIITR. Our team secured 7th Place globally. These writeups document the challenges I personally solved during the competition. The remaining challenges were tackled by my teammates.</p>
+<h2 id="Forensics">Forensics</h2>
+<h3 id="Mysterious-Melody"><em>Mysterious Melody</em></h3>
+<h4 id="Challenge-Description">Challenge Description</h4>
+<p><img src="/images/posts/2024-bcactf/desc.png" alt="Description"></p>
+<p>We have received a WAV file.</p>
+<h4 id="Solution">Solution</h4>
+<p>So, I opened the WAV file using Sonic Visualizer software. Initially, I was unsure of what to do after examining the Spectrogram. Then, I analyzed the melody range spectrogram and the peak frequency spectrogram.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You can add the Spectrogram, Melody Range Spectrogram, and Peak Frequency Spectrogram from the Pane menu.</span><br></pre></td></tr></table></figure>
+<p><img src="/images/posts/2024-bcactf/spec_melody.png" alt="Spectrogram"><br>
+<img src="/images/posts/2024-bcactf/peak.png" alt="Peak"></p>
+<p>Where I noticed something unusual that resembled Morse code, but it wasn’t. On the left side, there were 16 increasing lines, which matched the base16 hint provided. The hex values for the start of the flag ‘bcactf{’ corresponded to the highs and lows of the lines on the right side. This clue confirmed it was part of the flag, and from there, we decoded all the highs and lows.</p>
+<p><code>6263616374667B62656175746966756C5F6D656C6F64795F62656175746966756C5F6861726D6F6E797D</code></p>
+<h4 id="Flag">Flag</h4>
+<p><code>bcactf&#123;beautiful_melody_beautiful_harmony&#125;</code></p>
+<h3 id="Static"><em>Static</em></h3>
+<h4 id="Challenge-Description-2">Challenge Description</h4>
+<p><img src="/images/posts/2024-bcactf/desc_static.png" alt="Desc"></p>
+<p>We have received a MP4 file and the MD5 of a file.</p>
+<h4 id="Solution-2">Solution</h4>
+<p>As the hints suggested, I began searching for the metadata.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ exiftool static.mp4</span><br><span class="line">Compressor Name                 : Lavc60.31.102 libx264rgb</span><br><span class="line">Encoder                         : StaticMaker https://shorturl.at/AUKZm</span><br></pre></td></tr></table></figure>
+<p>Two things seemed sus to me: the Compressor and the Encoder. I then checked the above link for StaticMaker and realized they provided a documentation file with information about the StaticMaker software.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">The StaticMaker ™ utility converts any binary file into a video, suitable for use in … some application somewhere, probably.</span><br><span class="line">The default configuration is width=256, height=256.</span><br><span class="line"></span><br><span class="line">The program works by:</span><br><span class="line">1. Compressing the data</span><br><span class="line">2. Padding to a size that is a multiple of (6*width*height) bits</span><br><span class="line">3. Splitting the data into “subframes” of size (2*width*height) bits</span><br><span class="line">4. Writes data to video frames, which each triplet of three consecutive subframes are written to the red, green, and blue channels of one frame, respectively</span><br><span class="line">     Data written in row-major order</span><br><span class="line">     2 bits per pixel per channel</span><br><span class="line">THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.</span><br></pre></td></tr></table></figure>
+<p>WorkFlow:-</p>
+<ol>
+<li>
+<p>Extraction of Frames:<br>
+Utilizes FFmpeg to extract frames from the video.</p>
+</li>
+<li>
+<p>Extraction of Pixel Data:<br>
+Decodes the RGB channels of each frame.<br>
+Extracts 2 bits per pixel per channel</p>
+</li>
+<li>
+<p>Reconstruction of Binary Data:<br>
+Combines the extracted bits into a single stream.<br>
+Reconstructs the original binary data by converting the bits back into bytes.</p>
+</li>
+</ol>
+<p>For Extraction of Frames:-</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ffmpeg -i static.mp4 frame_%04d.png</span><br></pre></td></tr></table></figure>
+<p>Using ffmpeg, we extracted 72 frames in PNG format from the MP4 video.</p>
+<p><img src="/images/posts/2024-bcactf/frames.png" alt="Image 2"></p>
+<p>Next, I wrote a Python script to accomplish steps 2 and 3.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decode_frames</span>(<span class="params">frame_prefix, frame_count, width=<span class="number">256</span>, height=<span class="number">256</span></span>):</span><br><span class="line">    channels = [<span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;B&#x27;</span>]</span><br><span class="line">    bit_position = <span class="number">4</span>  <span class="comment"># Bit position(4or6) chosen based on successful MD5 checksum match, were taken bitpositions [2,4,6,8]</span></span><br><span class="line">    </span><br><span class="line">    data_bits = []</span><br><span class="line">    <span class="keyword">for</span> frame_idx <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, frame_count + <span class="number">1</span>):</span><br><span class="line">        frame_path = <span class="string">f&quot;<span class="subst">&#123;frame_prefix&#125;</span><span class="subst">&#123;frame_idx:04d&#125;</span>.png&quot;</span></span><br><span class="line">        frame = Image.<span class="built_in">open</span>(frame_path)</span><br><span class="line">        frame = frame.convert(<span class="string">&quot;RGB&quot;</span>)</span><br><span class="line">        pixels = np.array(frame)</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Extract the specified bits from each color channel</span></span><br><span class="line">        r_channel = (pixels[:, :, <span class="number">0</span>] &amp; (<span class="number">0b11</span> &lt;&lt; bit_position)) &gt;&gt; bit_position</span><br><span class="line">        g_channel = (pixels[:, :, <span class="number">1</span>] &amp; (<span class="number">0b11</span> &lt;&lt; bit_position)) &gt;&gt; bit_position</span><br><span class="line">        b_channel = (pixels[:, :, <span class="number">2</span>] &amp; (<span class="number">0b11</span> &lt;&lt; bit_position)) &gt;&gt; bit_position</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># Flatten the channels and convert to bit strings</span></span><br><span class="line">        <span class="keyword">for</span> bits <span class="keyword">in</span> r_channel.flatten():</span><br><span class="line">            data_bits.append(<span class="built_in">format</span>(bits, <span class="string">&#x27;02b&#x27;</span>))</span><br><span class="line">        <span class="keyword">for</span> bits <span class="keyword">in</span> g_channel.flatten():</span><br><span class="line">            data_bits.append(<span class="built_in">format</span>(bits, <span class="string">&#x27;02b&#x27;</span>))</span><br><span class="line">        <span class="keyword">for</span> bits <span class="keyword">in</span> b_channel.flatten():</span><br><span class="line">            data_bits.append(<span class="built_in">format</span>(bits, <span class="string">&#x27;02b&#x27;</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(data_bits)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_padding</span>(<span class="params">data_bits, width, height</span>):</span><br><span class="line">    size = <span class="number">6</span> * width * height</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;The size is&quot;</span>, size)</span><br><span class="line">    actual_size = <span class="built_in">len</span>(data_bits)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;The actual size is &#x27;</span>, actual_size)</span><br><span class="line">    <span class="keyword">if</span> actual_size % size == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;Multiple of size&quot;</span>)</span><br><span class="line">        <span class="comment"># No padding to remove</span></span><br><span class="line">        <span class="keyword">return</span> data_bits   <span class="comment"># size was already in multiple so need for removing the padding.</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Calculate the number of excess bits to remove</span></span><br><span class="line">    padding_size = actual_size % size</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># Remove the excess bits</span></span><br><span class="line">    data_bits = data_bits[:-padding_size]</span><br><span class="line">    <span class="keyword">return</span> data_bits</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">bits_to_bytes</span>(<span class="params">data_bits</span>):</span><br><span class="line">    byte_arr = <span class="built_in">bytearray</span>()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(data_bits), <span class="number">8</span>):</span><br><span class="line">        byte = data_bits[i:i+<span class="number">8</span>]</span><br><span class="line">        byte_arr.append(<span class="built_in">int</span>(byte, <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">bytes</span>(byte_arr)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_md5</span>(<span class="params">data</span>):</span><br><span class="line">    md5 = hashlib.md5(data).hexdigest()</span><br><span class="line">    <span class="keyword">return</span> md5</span><br><span class="line"></span><br><span class="line"><span class="comment"># Parameters</span></span><br><span class="line">frame_prefix = <span class="string">&#x27;frame_&#x27;</span></span><br><span class="line">frame_count = <span class="number">72</span>  <span class="comment"># Total number of frames</span></span><br><span class="line">width = <span class="number">256</span></span><br><span class="line">height = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Decode frames</span></span><br><span class="line">data_bits = decode_frames(frame_prefix, frame_count, width, height)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Checking padding</span></span><br><span class="line">data_bits = check_padding(data_bits, width, height)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Convert bits to bytes</span></span><br><span class="line">compressed_data = bits_to_bytes(data_bits)</span><br><span class="line"></span><br><span class="line">output_path = <span class="string">&#x27;extracted_data.bin&#x27;</span></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(output_path, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(compressed_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Extracted data saved.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Calculate and print MD5 checksum</span></span><br><span class="line">calculated_md5 = calculate_md5(compressed_data)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;MD5 checksum of extracted data after removing padding: <span class="subst">&#123;calculated_md5&#125;</span>&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>The extracted bin matches the MD5 checksum provided in the description. As I began analyzing the file, I employed several tools. When I used binwalk, it indicated the presence of Zlib compressed data, which I then extracted.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ binwalk -e extracted_data.bin</span><br><span class="line"></span><br><span class="line">DECIMAL       HEXADECIMAL     DESCRIPTION</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">40522         0x9E4A          Zlib compressed data, default compression</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>There are two approaches: one is quick and easy, while the other is little time-consuming.<br>
+This is the quick and easy method for lazy people like me to get the flag.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">g4rud4:~/Pictures/_extracted_data.bin.extracted$ <span class="built_in">ls</span></span><br><span class="line">9E4A  9E4A.zlib</span><br><span class="line">g4rud4:~/Pictures/_extracted_data.bin.extracted$ strings * | grep bcactf&#123;</span><br><span class="line">bootpc[[ --bootfile %bootfile%]] --dev %iface%[[ --server %server%]][[ --hwaddr %hwaddr%]] --returniffail --serverbcast</span><br><span class="line">can<span class="string">&#x27;t enable bcast on ARP socket</span></span><br><span class="line"><span class="string">bcache</span></span><br><span class="line"><span class="string">sbcast</span></span><br><span class="line"><span class="string">nulsohstxetxeotenqackbel bs ht nl vt ff cr so sidledc1dc2dc3dc4naksynetbcan emsubesc fs gs rs us sp</span></span><br><span class="line"><span class="string">http-alt    8080/tcp    webcache    # WWW caching service</span></span><br><span class="line"><span class="string">TTJvQS8TUoKU1xrBeKJR3Stwbbca+few4GeXVtt8YVMJAygCQMez2P2ccGrGKMOF</span></span><br><span class="line"><span class="string">bcactf&#123;imag3_PROc3sSINg_yaY_2ea104d700c1a8&#125;</span></span><br></pre></td></tr></table></figure>
+<p>Another one is to do it proper way:-</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ zlib-flate -uncompress &lt; 9E4A.zlib &gt; output</span><br><span class="line">$ exiftool output</span><br><span class="line">$ file output</span><br><span class="line">output: POSIX tar archive</span><br></pre></td></tr></table></figure>
+<p>I began extracting the tar archive once we obtained it.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ tar -xf output</span><br><span class="line">$ <span class="built_in">ls</span></span><br><span class="line">bin  dev  etc  home  lib  out</span><br></pre></td></tr></table></figure>
+<p>We got some folders let’s check out</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">$ tree .</span><br><span class="line">.</span><br><span class="line">├── bin</span><br><span class="line">│   ├── <span class="built_in">arch</span> -&gt; /bin/busybox</span><br><span class="line">│   ├── ash -&gt; /bin/busybox</span><br><span class="line">│   ├── <span class="built_in">base64</span> -&gt; /bin/busybox</span><br><span class="line">│   ├── bbconfig -&gt; /bin/busybox</span><br><span class="line">...</span><br><span class="line">├── home</span><br><span class="line">│   └── admin</span><br><span class="line">│       └── Documents</span><br><span class="line">│           ├── not_social_security_number.txt</span><br><span class="line">│           └── social_security_number.txt</span><br><span class="line">└── lib</span><br><span class="line">    ├── apk</span><br><span class="line">    │   ├── db</span><br><span class="line">    │   │   ├── installed</span><br><span class="line">    │   │   ├── lock</span><br><span class="line">    │   │   ├── scripts.tar</span><br><span class="line">    │   │   └── triggers</span><br><span class="line">    │   └── <span class="built_in">exec</span></span><br><span class="line">    ├── firmware</span><br><span class="line">    ├── ld-musl-x86_64.so.1</span><br><span class="line">    ├── libapk.so.2.14.0</span><br><span class="line">    ├── libc.musl-x86_64.so.1 -&gt; ld-musl-x86_64.so.1</span><br><span class="line">    └── libcrypto.so.3</span><br><span class="line"></span><br><span class="line">45 directories, 145 files</span><br></pre></td></tr></table></figure>
+<p>I began searching for the text files in the admin directories.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~/home/admin/Documents$ <span class="built_in">cat</span> not_social_security_number.txt</span><br><span class="line">bcactf&#123;imag3_PROc3sSINg_yaY_2ea104d700c1a8&#125;</span><br></pre></td></tr></table></figure>
+<p>Hooray!!! We captured the flag just 3 minutes before the CTF ended. ;p</p>
+<h4 id="Flag-2">Flag</h4>
+<p><code>bcactf&#123;imag3_PROc3sSINg_yaY_2ea104d700c1a8&#125;</code></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/forensics/" rel="tag">forensics</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+      <div class="article-nav-link-wrap article-nav-link-left">
+        
+          <img data-src="/images/posts/2025-irisctf/icon.png" data-sizes="auto" alt="IrisCTF 2025" class="lazyload">
+        
+        <a href="/2025/01/07/IrisCTF-2025/"></a>
+        <div class="article-nav-caption">Newer</div>
+        <h3 class="article-nav-title">
+          
+            IrisCTF 2025
+          
+        </h3>
+      </div>
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/posts/2024-byuctf/byuctf-cover.png" data-sizes="auto" alt="BYUCTF 2024" class="lazyload">
+      
+      <a href="/2024/05/20/BYUCTF-2024/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          BYUCTF 2024
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+        </div>
+        
+        
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2024-2025
+      <span class="footer-info-sep rotate"></span>
+      Harsh
+    </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        12.1k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:13
+      </div>
+    
+    
+    
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Forensics"><span class="toc-number">1.</span> <span class="toc-text">Forensics</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Mysterious-Melody"><span class="toc-number">1.1.</span> <span class="toc-text">Mysterious Melody</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description"><span class="toc-number">1.1.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution"><span class="toc-number">1.1.2.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Flag"><span class="toc-number">1.1.3.</span> <span class="toc-text">Flag</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Static"><span class="toc-number">1.2.</span> <span class="toc-text">Static</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-2"><span class="toc-number">1.2.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-2"><span class="toc-number">1.2.2.</span> <span class="toc-text">Solution</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Flag-2"><span class="toc-number">1.2.3.</span> <span class="toc-text">Flag</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/saturo-running-v1-6-2.gif" data-sizes="auto" alt="Harsh" class="lazyload">
+  <div class="sidebar-author-name">Harsh</div>
+  <div class="sidebar-description">20 | CTF Player | IN</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">4</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:notsoharsh13@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/g4rud4kun itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://x.com/g4rud4kun itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-linkedin sidebar-social-icon">
+      <a href=https://www.linkedin.com/in/harsh-gupta-b5792a280 itemprop="url" target="_blank" aria-label="linkedin" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-discord sidebar-social-icon">
+      <a href=https://discordapp.com/users/509689286589939713 itemprop="url" target="_blank" aria-label="discord" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  <!-- 
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+   -->
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/Satoru-Gojo-White-Hair-BlindfoldSatoru-Gojo.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Harsh",
+          title: "BCACTF 5.0 2024",
+          url: "https://g4rud4kun.github.io/2024/06/12/BCACTF-5-0-2024/",
+          excerpt: "",
+          description: "",
+          stripContent: "BCACTF 5.0! Returning for its fifth consecutive year, this high school CTF hosted by the Bergen County Academies offers challenges across various difficulty levels, catering to everyone from beginners to seasoned CTF veterans. I had the opportunity t",
+          date: "Wed Jun 12 2024 18:08:29 GMT+0530",
+          updated: "Fri Jan 17 2025 09:01:29 GMT+0530",
+          cover: "/images/posts/2024-bcactf/bcactf_logo.png",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.3.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+  
+    
+<script src="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm&#x2F;Yr2r3Dy4lfFg" crossorigin="anonymous" defer data-pjax></script>
+
+    
+<script src="https://npm.webcache.cn/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb&#x2F;GhzOouOXtZMP&#x2F;7XUzwPTstBeZFe&#x2F;+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" defer onload="renderMathInElement(document.body, {delimiters: [{left: &#39;$$&#39;, right: &#39;$$&#39;, display: true},{left: &#39;$&#39;, right: &#39;$&#39;, display: false}]});" data-pjax></script>
+
+  
+
+
+
+
+
+  </body>
+  </html>
+
