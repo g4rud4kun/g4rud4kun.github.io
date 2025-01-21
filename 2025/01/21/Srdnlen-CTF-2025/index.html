@@ -36,7 +36,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2025-srdnlenctf/cover.png">
 <meta property="article:published_time" content="2025-01-21T09:41:15.000Z">
-<meta property="article:modified_time" content="2025-01-21T10:59:57.414Z">
+<meta property="article:modified_time" content="2025-01-21T11:05:07.824Z">
 <meta property="article:author" content="Harsh">
 <meta property="article:tag" content="forensics">
 <meta property="article:tag" content="misc">
@@ -363,7 +363,7 @@
 
 <p>Step 9: Finding the Malware-Affected Application</p>
 <p>While analyzing the Application logs, I found an event with suspicious messages including Widgets.exe, which matched the question. This turned out to be the correct one.</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Give the application name whose corruption could depend from the malware. (First letter uppercase, add also the extension).</span><br><span class="line">Widgets.exe</span><br><span class="line">Is Windows Defender on?</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Give the application name whose corruption could depend from the malware. (First letter uppercase, add also the extension).</span><br><span class="line">Widgets.exe</span><br><span class="line">Correct!</span><br><span class="line">Is Windows Defender on?</span><br></pre></td></tr></table></figure>
 
 <p>Step 10: Checking Windows Defender Status</p>
 <p>For this question, I found the result as shown below:</p>
@@ -381,7 +381,7 @@
 
 <p>Step 13: Locating the Event ID for Credential Access</p>
 <p>I had memorized this Event ID earlier while analyzing the Security logs so much.</p>
-<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Which event ID states that the malware could have read the credentials?</span><br><span class="line">5379</span><br><span class="line">Congratulations! You have completed the quiz.</span><br><span class="line">Here&#x27;s your flag for Malvent: srdnlen&#123;DFIR1:evtx4system_mngmnt&amp;malwan&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Which event ID states that the malware could have read the credentials?</span><br><span class="line">5379</span><br><span class="line">Correct!</span><br><span class="line">Congratulations! You have completed the quiz.</span><br><span class="line">Here&#x27;s your flag for Malvent: srdnlen&#123;DFIR1:evtx4system_mngmnt&amp;malwan&#125;</span><br></pre></td></tr></table></figure>
 
 <p>We got our flag!!</p>
 <p>Flag:</p>
@@ -747,7 +747,7 @@
           description: "",
           stripContent: "Misc-ForensicsDFIR 1 - MalventChallenge DescriptionWe have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given evtx files and answer to the related questions. At the end you will",
           date: "Tue Jan 21 2025 15:11:15 GMT+0530",
-          updated: "Tue Jan 21 2025 16:29:57 GMT+0530",
+          updated: "Tue Jan 21 2025 16:35:07 GMT+0530",
           cover: "/images/posts/2025-srdnlenctf/cover.png",
         };
       </script>
