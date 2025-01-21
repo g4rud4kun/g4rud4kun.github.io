@@ -1,0 +1,850 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_bq08450reo';window.REIMU_CONFIG.clipboard_tips = {"success":"Copy Successful","fail":"Copy Failed","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.code_block = {"expand":true};</script>
+  
+  <title>
+    Srdnlen CTF 2025 |
+    
+    g4rud4kun
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CSource%20Code%20Pro:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CSource%20Code%20Pro:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_bq08450reo.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="Misc-ForensicsDFIR 1 - MalventChallenge DescriptionWe have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given evtx files and an">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Srdnlen CTF 2025">
+<meta property="og:url" content="https://g4rud4kun.github.io/2025/01/21/Srdnlen-CTF-2025/index.html">
+<meta property="og:site_name" content="g4rud4kun">
+<meta property="og:description" content="Misc-ForensicsDFIR 1 - MalventChallenge DescriptionWe have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given evtx files and an">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2025-srdnlenctf/cover.png">
+<meta property="article:published_time" content="2025-01-21T09:41:15.000Z">
+<meta property="article:modified_time" content="2025-01-21T10:59:57.414Z">
+<meta property="article:author" content="Harsh">
+<meta property="article:tag" content="forensics">
+<meta property="article:tag" content="misc">
+<meta property="article:tag" content="VirusTotal">
+<meta property="article:tag" content="evtx">
+<meta property="article:tag" content="volatility">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://g4rud4kun.github.io/images/posts/2025-srdnlenctf/cover.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="g4rud4kun" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+        
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.css">
+
+      
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/">Home</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/archives">Archives</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/about">About</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="Search"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <picture></picture>
+    <img fetchpriority="high" src="/images/posts/2025-srdnlenctf/cover.png" alt="Srdnlen CTF 2025">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">Srdnlen CTF 2025</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="sidebar-left"  >
+          <aside id="sidebar">
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc-Forensics"><span class="toc-number">1.</span> <span class="toc-text">Misc-Forensics</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-1-Malvent"><span class="toc-number">1.1.</span> <span class="toc-text">DFIR 1 - Malvent</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description"><span class="toc-number">1.1.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution"><span class="toc-number">1.1.2.</span> <span class="toc-text">Solution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-2-Malnet"><span class="toc-number">1.2.</span> <span class="toc-text">DFIR 2 - Malnet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">Solution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-3-RAMsomwhere"><span class="toc-number">1.3.</span> <span class="toc-text">DFIR 3 - RAMsomwhere</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-2"><span class="toc-number">1.3.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-2"><span class="toc-number">1.3.2.</span> <span class="toc-text">Solution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-4-MalThrInt"><span class="toc-number">1.4.</span> <span class="toc-text">DFIR 4 - MalThrInt</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-3"><span class="toc-number">1.4.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-3"><span class="toc-number">1.4.2.</span> <span class="toc-text">Solution</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/saturo-running-v1-6-2.gif" data-sizes="auto" alt="Harsh" class="lazyload">
+  <div class="sidebar-author-name">Harsh</div>
+  <div class="sidebar-description">20 | CTF Player | IN</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">5</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:notsoharsh13@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/g4rud4kun itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://x.com/g4rud4kun itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-linkedin sidebar-social-icon">
+      <a href=https://www.linkedin.com/in/harsh-gupta-b5792a280 itemprop="url" target="_blank" aria-label="linkedin" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-discord sidebar-social-icon">
+      <a href=https://discordapp.com/users/509689286589939713 itemprop="url" target="_blank" aria-label="discord" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+      <!-- 
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+       -->
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+</aside>
+
+          <section id="main"><article id="post-Srdnlen-CTF-2025" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/01/21/Srdnlen-CTF-2025/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-01-21T09:41:15.000Z" itemprop="datePublished">2025-01-21</time>
+    <time style="display: none;" id="post-update-time">2025-01-21</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/CTF-Writeups/" data-aos="zoom-in">CTF-Writeups</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="Misc-Forensics"><a href="#Misc-Forensics" class="headerlink" title="Misc-Forensics"></a>Misc-Forensics</h2><h3 id="DFIR-1-Malvent"><a href="#DFIR-1-Malvent" class="headerlink" title="DFIR 1 - Malvent"></a>DFIR 1 - Malvent</h3><h4 id="Challenge-Description"><a href="#Challenge-Description" class="headerlink" title="Challenge Description"></a>Challenge Description</h4><p>We have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given evtx files and answer to the related questions. At the end you will get the flag when you answer everything correct.</p>
+<p>Dfir 1 - Question 4: you have to find all the numbers separated by a comma related to insecure credential management (e.g., 1000, 2355, etc)</p>
+<p>NOTE: This is a real malware. Do not execute nothing. Pay attention and be careful. Srdnlen denies every damage on your infrastructure.</p>
+<p>This is a remote challenge, you can connect to the service with: <code>nc dfir1.challs.srdnlen.it 1984</code></p>
+<p>Author: slsanna<br>Attachments: al_evtx.zip</p>
+<h4 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h4><p>We received a series of DFIR Challenges from 1-4 and were provided with the al_evtx.zip file for the first challenge. To analyze these files, I used the Event Viewer tool.</p>
+<p>Step 1: Initial Connection and Question 1</p>
+<p>Let’s start by running the nc instance:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ nc dfir1.challs.srdnlen.it 1984</span><br><span class="line"></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"><span class="comment">#    Welcome to DFIR.1 Malvent Challenge!    #</span></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"></span><br><span class="line">In this challenge, you have to retrieve information from the given evtx files from al_evtx.zip</span><br><span class="line">You will answer a series of questions.</span><br><span class="line">Each correct answer will take you closer to the flag srdnlen&#123;something&#125;</span><br><span class="line">Good luck!</span><br><span class="line"></span><br><span class="line">What is the name of the suspicious service installed?</span><br></pre></td></tr></table></figure>
+
+<p>For this question, I started analyzing System logs. While checking the logs of the Source Service Control Manager, I noticed that a service with a random name had started, and the source of it was also a random filename, which seemed suspicious. This is shown below in the image:</p>
+<p><img src="/images/posts/2025-srdnlenctf/sus_service.png" alt="Sus"></p>
+<p>I submitted the name and found that it was the correct one.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the name of the suspicious service installed?</span><br><span class="line">QcUcMElh</span><br><span class="line">Correct!</span><br><span class="line">From which process it has been generated? Give also the extension</span><br></pre></td></tr></table></figure>
+
+<p>Using the same image above, I could answer the questions in Step 2 &amp; 3.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">From which process it has been generated? Give also the extension</span><br><span class="line">lmIcgUEQ.exe</span><br><span class="line">Correct!</span><br><span class="line">What is its event ID?</span><br><span class="line">7045</span><br><span class="line">Correct!</span><br><span class="line">Give the events IDs corresponding to unsecured data (e.g. cryptography). If more than one put a comma (e.g. 1, 2)</span><br></pre></td></tr></table></figure>
+
+<p>Step 4: Finding Event IDs for Unsecured Data</p>
+<p>I think this question was unclear, and the hint released later on, mentioned in the description, made it even more confusing. Because of this, we were unable to solve it, and many others were just analyzing the Security logs like us. Some of them brute-forced and found the correct one. :(</p>
+<p>I got the answer to this question later from <code>warlocksmurf</code>. When analyzing the System logs, I came across the TPM Logs, which showed that the data could not be encrypted.</p>
+<p><img src="/images/posts/2025-srdnlenctf/unsecured_data.png" alt="TPM"></p>
+<p>One of the event IDs is 15, and while finding the second event ID, I realized that event ID 18 contains the message: “This event triggers the Trusted Platform Module (TPM) provisioning&#x2F;status check to run.” With this, we get both event IDs.</p>
+<p>After this question, the rest were doable, and we could have completed this challenge during the competition.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Give the events IDs corresponding to unsecured data (e.g. cryptography). If more than one put a comma (e.g. 1, 2)</span><br><span class="line">15, 18</span><br><span class="line">Correct!</span><br><span class="line">Which event ID is related to the state of the account protection?</span><br></pre></td></tr></table></figure>
+
+<p>Step 5: Identifying the Event ID Related to Account Protection</p>
+<p>While analyzing the System logs, I came across Event ID 16977 from the Source Directory-Services-SAM, which referenced the password.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Which event ID is related to the state of the account protection?</span><br><span class="line">16977</span><br><span class="line">Correct!</span><br><span class="line">Give the compromised CLSID stating that malicious code could be executed. If more than one, put a comma (e.g. str1, str2)</span><br></pre></td></tr></table></figure>
+
+<p>Step 6: Finding Compromised CLSIDs</p>
+<p>For this question, search for “CLSID” in the System logs using Find. You will find two strings, as shown below:</p>
+<p><img src="/images/posts/2025-srdnlenctf/clsid.png" alt="CLSID"></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Give the compromised CLSID stating that malicious code could be executed. If more than one, put a comma (e.g. str1, str2)</span><br><span class="line">Windows.SecurityCenter.SecurityAppBroker, Windows.SecurityCenter.WscBrokerManager</span><br><span class="line">Correct!</span><br><span class="line">What is the port number listening for remote control?</span><br></pre></td></tr></table></figure>
+
+<p>Step 7: Determining the Port Number for Remote Control</p>
+<p>For this question, I found RDP URLs in the System logs. I tried all the associated port numbers, and the correct one is shown below:</p>
+<p><img src="/images/posts/2025-srdnlenctf/rdp.png" alt="Remote"></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the port number listening for remote control?</span><br><span class="line">3387</span><br><span class="line">Correct!</span><br><span class="line">Give the event ID related to the manipulation of specific data (e.g. registry key manipulation, deletion, creation, modification)</span><br></pre></td></tr></table></figure>
+
+<p>Step 8: Locating the Event ID for the Manipulation</p>
+<p>While analyzing the System logs, I found that Event ID 16 was associated with changes in Hives, which was the correct answer.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Give the event ID related to the manipulation of specific data (e.g. registry key manipulation, deletion, creation, modification)</span><br><span class="line">16</span><br><span class="line">Correct!</span><br><span class="line">Give the application name whose corruption could depend from the malware. (First letter uppercase, add also the extension).</span><br></pre></td></tr></table></figure>
+
+<p>Step 9: Finding the Malware-Affected Application</p>
+<p>While analyzing the Application logs, I found an event with suspicious messages including Widgets.exe, which matched the question. This turned out to be the correct one.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Give the application name whose corruption could depend from the malware. (First letter uppercase, add also the extension).</span><br><span class="line">Widgets.exe</span><br><span class="line">Is Windows Defender on?</span><br></pre></td></tr></table></figure>
+
+<p>Step 10: Checking Windows Defender Status</p>
+<p>For this question, I found the result as shown below:</p>
+<p><img src="/images/posts/2025-srdnlenctf/windef.png" alt="WinDef"></p>
+<p>Windows Defender was on.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Is Windows Defender on?</span><br><span class="line">Yes</span><br><span class="line">Correct!</span><br><span class="line">What is the event ID stating this?</span><br></pre></td></tr></table></figure>
+
+<p>Step 11: Identifying the Event ID Indicating Windows Defender Status</p>
+<p>From the same image, you can see that the Event ID was 15.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the event ID stating this?</span><br><span class="line">15</span><br><span class="line">Correct!</span><br><span class="line">Give the event ID related to the wrong management of different sessions and users in remote desktop</span><br></pre></td></tr></table></figure>
+
+<p>Step 12: Finding Event ID for Remote Desktop Mismanagement</p>
+<p>You can find the answer in the Application logs. The message states:<br>“The winlogon notification subscriber <SessionEnv> was unavailable to handle a critical notification event.”<br>The event ID is 6003.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Give the event ID related to the wrong management of different sessions and users in remote desktop</span><br><span class="line">6003</span><br><span class="line">Correct!</span><br><span class="line">Which event ID states that the malware could have read the credentials?</span><br></pre></td></tr></table></figure>
+
+<p>Step 13: Locating the Event ID for Credential Access</p>
+<p>I had memorized this Event ID earlier while analyzing the Security logs so much.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Which event ID states that the malware could have read the credentials?</span><br><span class="line">5379</span><br><span class="line">Congratulations! You have completed the quiz.</span><br><span class="line">Here&#x27;s your flag for Malvent: srdnlen&#123;DFIR1:evtx4system_mngmnt&amp;malwan&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We got our flag!!</p>
+<p>Flag:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">srdnlen&#123;DFIR1:evtx4system_mngmnt&amp;malwan&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="DFIR-2-Malnet"><a href="#DFIR-2-Malnet" class="headerlink" title="DFIR 2 - Malnet"></a>DFIR 2 - Malnet</h3><h4 id="Challenge-Description-1"><a href="#Challenge-Description-1" class="headerlink" title="Challenge Description"></a>Challenge Description</h4><p>We have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given pcap file and answer to the related questions. At the end you will get the flag when you answer everything correct.</p>
+<p>NOTE: This is a real malware. Do not execute nothing. Pay attention and be careful. Srdnlen denies every damage on your infrastructure.</p>
+<p>This is a remote challenge, you can connect to the service with: <code>nc dfir2.challs.srdnlen.it 1985</code><br>Author: slsanna</p>
+<p>Attachments: capture_net.pcapng</p>
+<h4 id="Solution-1"><a href="#Solution-1" class="headerlink" title="Solution"></a>Solution</h4><p>I’d blooded this challenge :P. We were provided with a PCAPNG file and an nc interface to answer a series of questions. Let’s begin!</p>
+<p>Step 1: Initial Connection and Question 1</p>
+<p>I started by connecting to the challenge service to check the first question:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">$ nc dfir2.challs.srdnlen.it 1985</span><br><span class="line"></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"><span class="comment">#    Welcome to DFIR.2 MalNet Challenge!     #</span></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"></span><br><span class="line">In this challenge, you have to retrieve information from the given pcap capture_net.pcap </span><br><span class="line">You will answer a series of questions.</span><br><span class="line">Each correct answer will take you closer to the flag srdnlen&#123;something&#125;</span><br><span class="line">Good luck!</span><br><span class="line"></span><br><span class="line">Which packet contains the header of an executable file?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>Using Wireshark, I exported all objects (File -&gt; Export Objects) and identified the relevant files:</p>
+<p><img src="/images/posts/2025-srdnlenctf/exp_obj.png" alt="Export Objects"></p>
+<p>Here’s a snippet of the file types identified using the file command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ file *</span><br><span class="line">7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d(19):  data</span><br><span class="line">7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d(2):   PE32+ executable (GUI) x86-64, <span class="keyword">for</span> MS Windows, 7 sections</span><br><span class="line">7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d(20):  data</span><br><span class="line">7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d(25):  DOS executable (COM or COMBOOT 16-bit), maybe with interrupt 22h, start instruction 0xe9c6a696 d565249c</span><br><span class="line">7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d(21):  data</span><br></pre></td></tr></table></figure>
+
+<p>The file marked with (2) was identified as PE32+. Initially, I checked the packet number of this file in the Export Objects list, but it did not match. To locate the desired packet, I applied a filter as shown below and found the correct packet, which was near the packet number listed in Export Objects.</p>
+<p><img src="/images/posts/2025-srdnlenctf/executable.png" alt="Filter"></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Which packet contains the header of an executable file?</span><br><span class="line">2137</span><br><span class="line">Correct!</span><br><span class="line">To which flow does it correspond? (PROTOCOLO FLOW_ID, e.g. HTTP 1)</span><br></pre></td></tr></table></figure>
+
+<p>Step 2: Determining Flow ID<br>To identify the Flow ID, I followed the TCP stream of Packet 2137 and determined the corresponding Flow ID: TCP 40.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">To which flow does it correspond? (PROTOCOLO FLOW_ID, e.g. HTTP 1)</span><br><span class="line">TCP 40</span><br><span class="line">Correct!</span><br><span class="line">Into how many parts is the executable fragmented? Give the total number of files</span><br></pre></td></tr></table></figure>
+
+<p>Step 3: Fragmentation<br>After saving the files locally, I found that the executable was fragmented into 29 parts (from 0 to 28).</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Into how many parts is the executable fragmented? Give the total number of files</span><br><span class="line">29</span><br><span class="line">Correct!</span><br><span class="line">What is the resource name accessed in the GET resource containing the executable file?. Give the complete name (e.g. /myfile/file1/this-is-the-file?A0=something&amp;A1=other%3d%3d)</span><br></pre></td></tr></table></figure>
+
+<p>Step 4: Resource Name<br>Searching for the resource name in the packets revealed the following:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the resource name accessed in the GET resource containing the executable file?. Give the complete name (e.g. /myfile/file1/this-is-the-file?A0=something&amp;A1=other%3d%3d)</span><br><span class="line">/filestreamingservice/files/7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509?P1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d</span><br><span class="line">Correct!</span><br><span class="line">What is the sha256 of the first part of the executable file?</span><br></pre></td></tr></table></figure>
+
+<p>Step 5: SHA256 Check<br>The SHA256 hash of the first part of the executable file (file (2)) was calculated as follows:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">sha256sum</span> 7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1/=1736543287/&amp;P2/=404/&amp;P3/=2/&amp;P4/=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d/(2/) </span><br><span class="line">b56b0ee4af8f4395455ed4f83b2d25498444c939fcf77d49ec9ec83c68983e52  7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509%3fP1=1736543287&amp;P2=404&amp;P3=2&amp;P4=A4bbVZMC2rLzoHuEoqkGyn%2bfjFNZYtKNVXsPbIbY5Amz3v4r%2bQitB5Uc%2fXCKOEvShr8HAJPOsSVdpx2t0DGgKQ%3d%3d(2)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the sha256 of the first part of the executable file?</span><br><span class="line">b56b0ee4af8f4395455ed4f83b2d25498444c939fcf77d49ec9ec83c68983e52</span><br><span class="line">Correct!</span><br><span class="line">To which of the extracted files does it correspond? As done by Wireshark, use the enumeration starting from 0</span><br></pre></td></tr></table></figure>
+
+<p>Step 6 - Corresponding Extracted File Enumeration<br>Using the Wireshark export naming convention, the file corresponds to the index (2).</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">To which of the extracted files does it correspond? As done by Wireshark, use the enumeration starting from 0</span><br><span class="line">2</span><br><span class="line">Correct!</span><br><span class="line">What is the sha256sum of the reconstructed file?</span><br></pre></td></tr></table></figure>
+
+<p>Step 7 - SHA-256 of the Reconstructed File</p>
+<p>This was the trickiest question. As usual, I first attempted to reconstruct the 7d9cd93c-1d5e-449b-9ad7-f1e8d6b90509 file using the pieces numbered (0) to (28). However, the reconstructed file did not match the full size specified in the packet, which was 176,870,976 bytes. This prompted me to explore other sources for the hash. It occurred to me that we had also received a piecehash file, which might be useful.</p>
+<p>The content of the piecehash file was as follows:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;MajorVersion&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;MinorVersion&quot;</span><span class="punctuation">:</span><span class="number">0</span><span class="punctuation">,</span><span class="attr">&quot;HashOfHashes&quot;</span><span class="punctuation">:</span><span class="string">&quot;JvZyinMn7LiBqNeYmy7JPeu8Kn4chEzksqZUnwB2Pg4=&quot;</span><span class="punctuation">,</span><span class="attr">&quot;ContentLength&quot;</span><span class="punctuation">:</span><span class="number">176870976</span><span class="punctuation">,</span><span class="attr">&quot;PieceSize&quot;</span><span class="punctuation">:</span><span class="number">1048576</span><span class="punctuation">,</span><span class="attr">&quot;Pieces&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;tWsO5K+PQ5VFXtT4Oy0lSYREyTn8931J7J7IPGiYPlI=&quot;</span><span class="punctuation">,</span><span class="string">&quot;VXw6j5l8k7XNgyfLxfWGKbogZJOn/H9QjwKf8rKKgu0=&quot;</span><span class="punctuation">,</span><span class="string">&quot;q2tg5LDXyy0r0B1aSW+cSfV73UedLIbMTQZ+V+UvlCs=&quot;</span><span class="punctuation">,</span><span class="string">&quot;....</span></span><br></pre></td></tr></table></figure>
+
+<p>This file contained the HashOfHashes as well as 167 piece hashes. Since we already knew the size of the main file, which was also mentioned in this file, I hypothesized that the HashOfHashes could be the hash of the main file. I decoded the HashOfHashes and converted it to hexadecimal. Upon verification, it turned out to be the desired hash.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the sha256sum of the reconstJust follow the packet and you will get the answer for the above question and also for after one.ructed file?</span><br><span class="line">26F6728A7327ECB881A8D7989B2EC93DEBBC2A7E1C844CE4B2A6549F00763E0E</span><br><span class="line">Correct!</span><br><span class="line">How many downloaded chrome extensions are not corrupted?</span><br></pre></td></tr></table></figure>
+
+<p>Step 8 - Number of Non-Corrupted Chrome Extensions<br>Among the exported objects, six were Chrome extensions. Using the file command, I identified that one file did not display as a <code>Google Chrome extension, version 3</code>, indicating it was corrupted. Thus, five extensions were not corrupted.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">How many downloaded chrome extensions are not corrupted?</span><br><span class="line">5</span><br><span class="line">Correct!</span><br><span class="line">Which packet is related to cryptomining?</span><br></pre></td></tr></table></figure>
+
+<p>Step 9 - Packet Related to Cryptomining<br>I applied the filter <code>frame contains &quot;cryptomin&quot;</code> in Wireshark and identified the relevant packet as:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Which packet is related to cryptomining?</span><br><span class="line">290</span><br><span class="line">Correct!</span><br><span class="line">To which flow does it correspond? (PROTOCOLO FLOW_ID, e.g. UDP 0)</span><br></pre></td></tr></table></figure>
+
+<p>Step 10 - Corresponding Flow for Cryptomining Packet<br>Following the TCP stream of packet 290 revealed the flow ID:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">To which flow does it correspond? (PROTOCOLO FLOW_ID, e.g. UDP 0)</span><br><span class="line">http 8</span><br><span class="line">Correct!</span><br><span class="line">What is the resource name? Give the complete name (e.g. /myfile/file1/this-is-the-file?A0=something&amp;A1=other%3d%3d)</span><br></pre></td></tr></table></figure>
+
+<p>Step 11 - Resource Name for Cryptomining<br>The resource name associated with the packet was:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the resource name? Give the complete name (e.g. /myfile/file1/this-is-the-file?A0=something&amp;A1=other%3d%3d)</span><br><span class="line">/filestreamingservice/files/dfeb2940-49d3-4f29-8fd8-d984a787dc6e?P1=1736222766&amp;P2=404&amp;P3=2&amp;P4=H1jtSvldNZpuTpd5fP9uKkWsRR%2f5pXzccLVud6a0mJoxofqoKB34dNqF4qXGEwhkbPhjKQoon413psf1XzNktA%3d%3d</span><br><span class="line">Correct!</span><br><span class="line">Give the sha256 of the file related to cryptocurrency.</span><br></pre></td></tr></table></figure>
+
+<p>Step 12 - SHA-256 of the Cryptomining File<br>To verify the cryptomining file, I exported it using Wireshark’s “Export Objects” feature and calculated its SHA-256 hash using the sha256sum command:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Give the sha256 of the file related to cryptocurrency.</span><br><span class="line">364dfe0f3c1ad2df13e7629e2a7188fae3881ddb83a46c1170112d8d3b5a73de</span><br><span class="line">Correct!</span><br><span class="line">Congratulations! You have completed the quiz.</span><br><span class="line">Here&#x27;s your flag for challenge Malnet: srdnlen&#123;DFIR2:network_analysis_R34L_malware&#125;</span><br></pre></td></tr></table></figure>
+<p>Completed the challenge!</p>
+<p>Flag:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">srdnlen&#123;DFIR2:network_analysis_R34L_malware&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="DFIR-3-RAMsomwhere"><a href="#DFIR-3-RAMsomwhere" class="headerlink" title="DFIR 3 - RAMsomwhere"></a>DFIR 3 - RAMsomwhere</h3><h4 id="Challenge-Description-2"><a href="#Challenge-Description-2" class="headerlink" title="Challenge Description"></a>Challenge Description</h4><p>We have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given elf file and answer to the related questions. At the end you will get the flag when you answer everything correct.</p>
+<p>For questions related to finding something network related “not present in the pcap” - we are referring to the pcap of DFIR2 - MalNet.</p>
+<p>You can download the file from this link: <a target="_blank" rel="noopener" href="https://tinyurl.com/srdnlenCTF24-dfir3">https://tinyurl.com/srdnlenCTF24-dfir3</a></p>
+<p>NOTE: This is a real malware. Do not execute nothing. Pay attention and be careful. Srdnlen denies every damage on your infrastructure.</p>
+<p>This is a remote challenge, you can connect to the service with: <code>nc dfir3.challs.srdnlen.it 1986</code><br>Author: slsanna</p>
+<h4 id="Solution-2"><a href="#Solution-2" class="headerlink" title="Solution"></a>Solution</h4><p>Will be posting soon! :p</p>
+<h3 id="DFIR-4-MalThrInt"><a href="#DFIR-4-MalThrInt" class="headerlink" title="DFIR 4 - MalThrInt"></a>DFIR 4 - MalThrInt</h3><h4 id="Challenge-Description-3"><a href="#Challenge-Description-3" class="headerlink" title="Challenge Description"></a>Challenge Description</h4><p>We have been notified of an attack in one of our machines. This is a real forensics investigation and you have to retrieve Threat Intelligence data from VirusTotal using the last answered hash of DFIR-3-RAMsomwhere and answer to the related questions. At the end you will get the flag when you answer everything correct.</p>
+<p>NOTE: This is a real malware. Do not execute nothing. Pay attention and be careful. Srdnlen denies every damage on your infrastructure.</p>
+<p>This is a remote challenge, you can connect to the service with: <code>nc dfir4.challs.srdnlen.it 1987</code><br>Author: slsanna</p>
+<h4 id="Solution-3"><a href="#Solution-3" class="headerlink" title="Solution"></a>Solution</h4><p>This challenge required retrieving Threat Intelligence data from VirusTotal using the last answered hash from DFIR-3-RAMsomwhere.</p>
+<p>First, search for the hash <code>0002bdf0923262600d3ef66d1ec6b2396a434e6f7626a9d70241a5663ee2f736</code> on the VirusTotal website to gather the necessary information. Then, start interacting with the provided nc instance.</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ nc dfir4.challs.srdnlen.it 1987</span><br><span class="line"></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"><span class="comment">#   Welcome to DFIR.4 MalThrInt Challenge!   #</span></span><br><span class="line"><span class="comment">##############################################</span></span><br><span class="line"></span><br><span class="line">In this challenge, you have to retrieve information from VirusTotal using the <span class="built_in">hash</span> correctly answered <span class="keyword">in</span> the last question of DFIR.3-RAMsomwhere </span><br><span class="line">You will answer a series of questions.</span><br><span class="line">Each correct answer will take you closer to the flag srdnlen&#123;something&#125;</span><br><span class="line">Good luck!</span><br><span class="line"></span><br><span class="line">What is the VT detection score?</span><br></pre></td></tr></table></figure>
+
+<p>Step 1: VT Detection Score<br>The currently VirusTotal detection score is 65&#x2F;72. While it may change over time, the correct answer here is 62&#x2F;72. If you face issues, you can attempt a brute-force approach by testing nearby values.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the VT detection score?</span><br><span class="line">62/72</span><br><span class="line">Correct!</span><br><span class="line">Give the popular threat label</span><br></pre></td></tr></table></figure>
+
+<p>Step 2: Popular Threat Label<br>Navigate to the Detection page under the Dynamic Analysis Sandbox Detections section. The correct answer is:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Give the popular threat label</span><br><span class="line">virus.virlock/polyransom</span><br><span class="line">Correct!</span><br><span class="line">What is the target machine?</span><br></pre></td></tr></table></figure>
+
+<p>Step 3: Target Machine<br>On the Details page, scroll down to find the target machine information. The answer is:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the target machine?</span><br><span class="line">Intel 386</span><br><span class="line">Correct!</span><br><span class="line">Which dlls are used? Give just the name without .dll extension. If more than one put a comma (e.g. 1, 2)</span><br></pre></td></tr></table></figure>
+
+<p>I got tricked by this question. At first, I tried using the DLLs mentioned in the Files Opened and Runtime Modules sections, but there were many, and I failed to find the correct ones. Then, I checked the Imports section on the Details page, where I found two DLL modules. After trying those, I got the desired result.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Which dlls are used? Give just the name without .dll extension. If more than one put a comma (e.g. 1, 2)</span><br><span class="line">kernel32, user32</span><br><span class="line">Correct!</span><br><span class="line">What is the malicious IP address?</span><br></pre></td></tr></table></figure>
+
+<p>Step 5: Malicious IP Address<br>On the Relations page, look under the Contacted IP addresses section. 1 IP is detected and got the desired result:</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">What is the malicious IP address?</span><br><span class="line">144.76.195.253</span><br><span class="line">Correct!</span><br><span class="line">What is the registrar of the domain related to the previous bitcoin address?</span><br></pre></td></tr></table></figure>
+
+<p>Step 6: Registrar of the Domain<br>Under the Contacted Domains section, identify the domain related to the previous Bitcoin address.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">What is the registrar of the domain related to the previous bitcoin address?</span><br><span class="line">Hetzner Online GmbH</span><br><span class="line">Which persistence techniques according to MITRE does it have? If more than one put a comma (e.g. 1, 2)</span><br></pre></td></tr></table></figure>
+
+<p>Step 7: MITRE Persistence Techniques<br>On the Behavior page, check the MITRE ATT&amp;CK Tactics and Techniques section. Similarly you will get the answer for the Step - 8, 9, 10.</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Which persistence techniques according to MITRE does it have? If more than one put a comma (e.g. 1, 2)</span><br><span class="line">T1053, T1542, T1542.003, T1547, T1547.001, T1574, T1574.002</span><br><span class="line">Correct!</span><br><span class="line">Which defence/evasion techniques according to MITRE does it have? If more than one put a comma (e.g. 1, 2)</span><br><span class="line">T1014, T1027, T1027.002, T1036, T1055, T1112, T1202, T1497, T1542, T1542.003, T1548, T1548.002, T1562, T1562.001, T1562.006, T1564, T1564.001, T1574, T1574.002</span><br><span class="line">Correct!</span><br><span class="line">Which anti-behavioral analysis techniques according to MITRE does it have? If more than one put a comma (e.g. 1, 2)</span><br><span class="line">B0007, B0007.008, F0001</span><br><span class="line">Correct!</span><br><span class="line">Which anti-static analysis technique according to MITRE does it have?</span><br><span class="line">F0001</span><br><span class="line">Correct!</span><br><span class="line">Congratulations! You have completed the quiz.</span><br><span class="line">Here&#x27;s your flag for challenge DIR_4_MalThrInt: srdnlen&#123;DFIR4:VirusTotal4PPID_ThreatIntelligence&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Flag:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">srdnlen&#123;DFIR4:VirusTotal4PPID_ThreatIntelligence&#125;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/VirusTotal/" rel="tag">VirusTotal</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/evtx/" rel="tag">evtx</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/forensics/" rel="tag">forensics</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/misc/" rel="tag">misc</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/volatility/" rel="tag">volatility</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/posts/2025-uoftctf/cover.png" data-sizes="auto" alt="UofTCTF 2025" class="lazyload">
+      
+      <a href="/2025/01/18/UofTCTF-2025/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          UofTCTF 2025
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+        </div>
+        
+        
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2024-2025
+      <span class="footer-info-sep rotate"></span>
+      Harsh
+    </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        15.2k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        01:33
+      </div>
+    
+    
+    
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Misc-Forensics"><span class="toc-number">1.</span> <span class="toc-text">Misc-Forensics</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-1-Malvent"><span class="toc-number">1.1.</span> <span class="toc-text">DFIR 1 - Malvent</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description"><span class="toc-number">1.1.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution"><span class="toc-number">1.1.2.</span> <span class="toc-text">Solution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-2-Malnet"><span class="toc-number">1.2.</span> <span class="toc-text">DFIR 2 - Malnet</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">Solution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-3-RAMsomwhere"><span class="toc-number">1.3.</span> <span class="toc-text">DFIR 3 - RAMsomwhere</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-2"><span class="toc-number">1.3.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-2"><span class="toc-number">1.3.2.</span> <span class="toc-text">Solution</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#DFIR-4-MalThrInt"><span class="toc-number">1.4.</span> <span class="toc-text">DFIR 4 - MalThrInt</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Challenge-Description-3"><span class="toc-number">1.4.1.</span> <span class="toc-text">Challenge Description</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Solution-3"><span class="toc-number">1.4.2.</span> <span class="toc-text">Solution</span></a></li></ol></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/saturo-running-v1-6-2.gif" data-sizes="auto" alt="Harsh" class="lazyload">
+  <div class="sidebar-author-name">Harsh</div>
+  <div class="sidebar-description">20 | CTF Player | IN</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">5</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">1</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">7</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:notsoharsh13@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/g4rud4kun itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://x.com/g4rud4kun itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-linkedin sidebar-social-icon">
+      <a href=https://www.linkedin.com/in/harsh-gupta-b5792a280 itemprop="url" target="_blank" aria-label="linkedin" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-discord sidebar-social-icon">
+      <a href=https://discordapp.com/users/509689286589939713 itemprop="url" target="_blank" aria-label="discord" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/Satoru-Gojo-White-Hair-BlindfoldSatoru-Gojo.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Harsh",
+          title: "Srdnlen CTF 2025",
+          url: "https://g4rud4kun.github.io/2025/01/21/Srdnlen-CTF-2025/",
+          excerpt: "",
+          description: "",
+          stripContent: "Misc-ForensicsDFIR 1 - MalventChallenge DescriptionWe have been notified of an attack in one of our machines. This is a real forensics investigation and you have to analyse the given evtx files and answer to the related questions. At the end you will",
+          date: "Tue Jan 21 2025 15:11:15 GMT+0530",
+          updated: "Tue Jan 21 2025 16:29:57 GMT+0530",
+          cover: "/images/posts/2025-srdnlenctf/cover.png",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.3.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+  
+    
+<script src="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm&#x2F;Yr2r3Dy4lfFg" crossorigin="anonymous" defer data-pjax></script>
+
+    
+<script src="https://npm.webcache.cn/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb&#x2F;GhzOouOXtZMP&#x2F;7XUzwPTstBeZFe&#x2F;+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" defer onload="renderMathInElement(document.body, {delimiters: [{left: &#39;$$&#39;, right: &#39;$$&#39;, display: true},{left: &#39;$&#39;, right: &#39;$&#39;, display: false}]});" data-pjax></script>
+
+  
+
+
+
+
+
+  </body>
+  </html>
+
