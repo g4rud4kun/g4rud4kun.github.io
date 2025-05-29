@@ -1,0 +1,799 @@
+
+  <!DOCTYPE html>
+  <html lang="en"  data-theme="dark" >
+  <head>
+  <meta charset="utf-8">
+  
+
+  
+
+  
+
+  <script>window.REIMU_CONFIG = {};window.REIMU_CONFIG.icon_font = '4552607_bq08450reo';window.REIMU_CONFIG.clipboard_tips = {"success":"Copy Successful","fail":"Copy Failed","copyright":{"enable":false,"count":50,"content":"本文版权：本博客所有文章除特别声明外，均采用 BY-NC-SA 许可协议。转载请注明出处！"}};window.REIMU_CONFIG.code_block = {"expand":true};</script>
+  
+  <title>
+    VoIP Setup for Beginners: Daily Use, CTF Challenges, and Wireshark Deep Dive |
+    
+    g4rud4kun
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CSource%20Code%20Pro:400,400italic,700,700italic&display=swap"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mulish:400,400italic,700,700italic%7CNoto%20Serif%20SC:400,400italic,700,700italic%7CSource%20Code%20Pro:400,400italic,700,700italic&display=swap" media="print" onload="this.media&#x3D;&#39;all&#39;">
+  
+    <link rel="preload" href="//at.alicdn.com/t/c/font_4552607_bq08450reo.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  
+  
+    
+<link rel="stylesheet" href="/css/loader.css">
+
+  
+  
+    <meta name="description" content="Voice over Internet ProtocolHola folks!I’m Harsh aka G4RUD4, and today I’m sharing a beginner-friendly guide to setting up a VoIP environment. Whether you’re looking to experiment with VoIP tech, dive">
+<meta property="og:type" content="article">
+<meta property="og:title" content="VoIP Setup for Beginners: Daily Use, CTF Challenges, and Wireshark Deep Dive">
+<meta property="og:url" content="https://g4rud4kun.github.io/2025/05/28/VoIP-Setup-for-Beginners-Daily-Use-CTF-Challenges-and-Wireshark-Deep-Dive/index.html">
+<meta property="og:site_name" content="g4rud4kun">
+<meta property="og:description" content="Voice over Internet ProtocolHola folks!I’m Harsh aka G4RUD4, and today I’m sharing a beginner-friendly guide to setting up a VoIP environment. Whether you’re looking to experiment with VoIP tech, dive">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://g4rud4kun.github.io/images/posts/2025-voip/voip.png">
+<meta property="article:published_time" content="2025-05-28T14:45:00.000Z">
+<meta property="article:modified_time" content="2025-05-29T21:10:06.251Z">
+<meta property="article:author" content="Harsh">
+<meta property="article:tag" content="networking">
+<meta property="article:tag" content="voip">
+<meta property="article:tag" content="wireshark">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://g4rud4kun.github.io/images/posts/2025-voip/voip.png">
+  
+  
+    <link rel="alternate" href="/atom.xml" title="g4rud4kun" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/images/favicon.ico">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="preload" href="https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  
+    
+      
+        
+<link rel="stylesheet" href="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.css">
+
+      
+    
+  
+  
+  
+  
+    
+<script src="https://npm.webcache.cn/pace-js@1.2.4/pace.min.js" integrity="sha384-k6YtvFUEIuEFBdrLKJ3YAUbBki333tj1CSUisai5Cswsg9wcLNaPzsTHDswp4Az8" crossorigin="anonymous"></script>
+
+  
+  
+    
+<link rel="stylesheet" href="https://npm.webcache.cn/@reimujs/aos@0.1.0/dist/aos.css">
+
+  
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+  <body>
+    
+  <div id='loader'>
+    <div class="loading-left-bg loading-bg"></div>
+    <div class="loading-right-bg loading-bg"></div>
+    <div class="spinner-box">
+      <div class="loading-taichi">
+        
+          <svg width="150" height="150" viewBox="0 0 1024 1024" class="icon" version="1.1" xmlns="https://www.w3.org/2000/svg" shape-rendering="geometricPrecision">
+            <path d="M303.5 432A80 80 0 0 1 291.5 592A80 80 0 0 1 303.5 432z" fill="var(--red-1, #ff5252)" />
+            <path d="M512 65A447 447 0 0 1 512 959L512 929A417 417 0 0 0 512 95A417 417 0 0 0 512 929L512 959A447 447 0 0 1 512 65z 
+           M512 95A417 417 0 0 1 929 512A208.5 208.5 0 0 1 720.5 720.5L720.5 592A80 80 0 0 0 720.5 432A80 80 0 0 0 720.5 592L720.5 720.5A208.5 208.5 0 0 1 512 512A208.5 208.5 0 0 0 303.5 303.5A208.5 208.5 0 0 0 95 512A417 417 0 0 1 512 95z" fill="var(--red-1, #ff5252)" />
+          </svg>
+        
+      </div>
+      <div class="loading-word">Loading...</div>
+    </div>
+  </div>
+  </div>
+  <script>
+    var time = null;
+    var startLoading = () => {
+      time = Date.now();
+      document.getElementById('loader').classList.remove("loading");
+    }
+    var endLoading = () => {
+      if (!time) {
+        document.body.style.overflow = 'auto';
+        document.getElementById('loader').classList.add("loading");
+      } else {
+        if (Date.now() - time > 500) {
+          time = null;
+          document.body.style.overflow = 'auto';
+          document.getElementById('loader').classList.add("loading");
+        } else {
+          setTimeout(endLoading, 500 - (Date.now() - time));
+          time = null;
+        }
+      }
+    }
+    window.addEventListener('DOMContentLoaded', endLoading);
+    document.getElementById('loader').addEventListener('click', endLoading);
+  </script>
+
+<div id="copy-tooltip" style="pointer-events: none; opacity: 0; transition: all 0.2s ease; position: fixed;top: 50%;left: 50%;z-index: 999;transform: translate(-50%, -50%);color: white;background: rgba(0, 0, 0, 0.5);padding: 10px 15px;border-radius: 10px;">
+</div>
+
+
+    <div id="container">
+      <div id="wrap">
+        <div id="header-nav">
+  <nav id="main-nav">
+    
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/">Home</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/archives">Archives</a>
+        </span>
+      
+        <span class="main-nav-link-wrap">
+          <div class="main-nav-icon icon rotate">
+            &#xe62b;
+          </div>
+          <a class="main-nav-link" href="/about">About</a>
+        </span>
+      
+    
+    <a id="main-nav-toggle" class="nav-icon"></a>
+  </nav>
+  <nav id="sub-nav">
+    
+    
+    
+      <a id="nav-search-btn" class="nav-icon popup-trigger" title="Search"></a>
+    
+  </nav>
+</div>
+<header id="header">
+  
+    <picture></picture>
+    <img fetchpriority="high" src="/images/posts/2025-voip/voip.png" alt="VoIP Setup for Beginners: Daily Use, CTF Challenges, and Wireshark Deep Dive">
+  
+  <div id="header-outer">
+    <div id="header-title">
+      
+        
+        
+          <a href="/" id="logo">
+            <h1 data-aos="slide-up">VoIP Setup for Beginners: Daily Use, CTF Challenges, and Wireshark Deep Dive</h1>
+          </a>
+        
+      
+      
+        
+        <h2 id="subtitle-wrap" data-aos="slide-down">
+          
+        </h2>
+      
+    </div>
+  </div>
+</header>
+
+        <div id="content" class="sidebar-left"  >
+          <aside id="sidebar">
+  
+  
+  <div class="sidebar-wrapper wrap-sticky">
+    <div class="sidebar-wrap" data-aos="fade-up">
+      
+        <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Voice-over-Internet-Protocol"><span class="toc-number">1.</span> <span class="toc-text">Voice over Internet Protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-VoIP"><span class="toc-number">1.1.</span> <span class="toc-text">What is VoIP?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-You%E2%80%99ll-Need"><span class="toc-number">1.2.</span> <span class="toc-text">What You’ll Need</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-Up-Asterisk-Server-on-Ubuntu"><span class="toc-number">1.3.</span> <span class="toc-text">Setting Up Asterisk Server on Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuring-Asterisk"><span class="toc-number">1.4.</span> <span class="toc-text">Configuring Asterisk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Starting-Asterisk-Server"><span class="toc-number">1.5.</span> <span class="toc-text">Starting Asterisk Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-Up-Linphone-Softphone"><span class="toc-number">1.6.</span> <span class="toc-text">Setting Up Linphone (Softphone)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Making-the-Call"><span class="toc-number">1.7.</span> <span class="toc-text">Making the Call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deep-Dive-with-Wireshark"><span class="toc-number">1.8.</span> <span class="toc-text">Deep Dive with Wireshark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">1.9.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+        <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/saturo-running-v1-6-2.gif" data-sizes="auto" alt="Harsh" class="lazyload">
+  <div class="sidebar-author-name">Harsh</div>
+  <div class="sidebar-description">20 | CTF Player | IN</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">8</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">2</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">14</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:notsoharsh13@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/g4rud4kun itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://x.com/g4rud4kun itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-linkedin sidebar-social-icon">
+      <a href=https://www.linkedin.com/in/harsh-gupta-b5792a280 itemprop="url" target="_blank" aria-label="linkedin" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-discord sidebar-social-icon">
+      <a href=https://discordapp.com/users/509689286589939713 itemprop="url" target="_blank" aria-label="discord" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+  
+</div>
+</div>
+      
+      <!-- 
+        <div class="sidebar-btn-wrapper" style="position:static">
+          <div class="sidebar-toc-btn current"></div>
+          <div class="sidebar-common-btn"></div>
+        </div>
+       -->
+    </div>
+  </div>
+
+  <div class="sidebar-widget">
+  
+  </div>
+</aside>
+
+          <section id="main"><article id="post-VoIP-Setup-for-Beginners-Daily-Use-CTF-Challenges-and-Wireshark-Deep-Dive" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-inner" data-aos="fade-up">
+    <div class="article-meta">
+      <div class="article-date">
+  <a href="/2025/05/28/VoIP-Setup-for-Beginners-Daily-Use-CTF-Challenges-and-Wireshark-Deep-Dive/" class="article-date-link" data-aos="zoom-in">
+    <time datetime="2025-05-28T14:45:00.000Z" itemprop="datePublished">2025-05-28</time>
+    <time style="display: none;" id="post-update-time">2025-05-30</time>
+  </a>
+</div>
+
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Blogs/" data-aos="zoom-in">Blogs</a>
+  </div>
+
+
+    </div>
+    <div class="hr-line"></div>
+    
+
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+      
+        <h2 id="Voice-over-Internet-Protocol"><a href="#Voice-over-Internet-Protocol" class="headerlink" title="Voice over Internet Protocol"></a>Voice over Internet Protocol</h2><p>Hola folks!<br>I’m Harsh aka G4RUD4, and today I’m sharing a beginner-friendly guide to setting up a VoIP environment. Whether you’re looking to experiment with VoIP tech, dive into packet-level analysis using Wireshark, or build challenges for cybersecurity CTFs, this post has you covered.</p>
+<h3 id="What-is-VoIP"><a href="#What-is-VoIP" class="headerlink" title="What is VoIP?"></a>What is VoIP?</h3><p>VoIP (Voice over Internet Protocol) allows you to make voice and video calls over the internet instead of traditional phone lines. It converts analog voice signals into digital data that travels over IP networks.</p>
+<p>Here’s a simple diagram to show how it works:</p>
+<p><img src="/images/posts/2025-voip/what-is-VoIP-Phone-Diagram.jpg" alt="Basic Workflow"></p>
+<p><img src="/images/posts/2025-voip/Introduction-to-VOIP-Phone.webp" alt="Image3"></p>
+<h3 id="What-You’ll-Need"><a href="#What-You’ll-Need" class="headerlink" title="What You’ll Need"></a>What You’ll Need</h3><p>You can either use two VMs or, like me, run one instance on Windows and another on a Linux VM (Ubuntu 24.04 on Oracle VirtualBox).</p>
+<p>Required Tools:</p>
+<ul>
+<li><p>Asterisk (v22.1.0) – Acts as your VoIP server</p>
+</li>
+<li><p>Linphone (v5.0.2) – A softphone for making calls</p>
+</li>
+</ul>
+<h3 id="Setting-Up-Asterisk-Server-on-Ubuntu"><a href="#Setting-Up-Asterisk-Server-on-Ubuntu" class="headerlink" title="Setting Up Asterisk Server on Ubuntu"></a>Setting Up Asterisk Server on Ubuntu</h3><p>Open your terminal and run:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://downloads.asterisk.org/pub/telephony/asterisk/asterisk-22.4.1.tar.gz | tar -zxvf asterisk-22.4.1.tar.gz</span><br></pre></td></tr></table></figure>
+<p>&#96;</p>
+<blockquote>
+<p> I used <code>asterisk-22.1.0.tar.gz</code>, so update the version as needed.</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> apt-get install build-essential libssl-dev libncurses5-dev libnewt-dev libxml2-dev libsqlite3-dev uuid-dev libedit-dev libjansson-dev sqlite3</span><br></pre></td></tr></table></figure>
+
+<p>Navigate to the Asterisk folder and enable SIP and RTP modules before building:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> make menuselect</span><br></pre></td></tr></table></figure>
+
+<p>Enable chan_pjsip and chan_rtp modules. Save and exit.</p>
+<p><img src="/images/posts/2025-voip/menuselect.png" alt="menuselect"></p>
+<p>Then run the following commands one by one or by script:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make -j$(<span class="built_in">nproc</span>)</span><br><span class="line"><span class="built_in">sudo</span> make install</span><br><span class="line"><span class="built_in">sudo</span> make samples</span><br><span class="line"><span class="built_in">sudo</span> make config</span><br></pre></td></tr></table></figure>
+
+<p>This will take some time. Be patient!</p>
+<h3 id="Configuring-Asterisk"><a href="#Configuring-Asterisk" class="headerlink" title="Configuring Asterisk"></a>Configuring Asterisk</h3><p>Edit these files in &#x2F;etc&#x2F;asterisk&#x2F;:</p>
+<p>pjsip.conf – SIP user and transport configs</p>
+<p>extensions.conf – Dialplan logic</p>
+<p><code>&#39;;&#39; is for the comments</code></p>
+<p>pjsip.conf:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">[101]</span><br><span class="line">auth=101 ; we are using username as 101</span><br><span class="line">aors=101</span><br><span class="line">type=endpoint</span><br><span class="line">context=internal</span><br><span class="line">message_context=internal</span><br><span class="line">transport=udp_transport ; Mention the transport protocol you want to use</span><br><span class="line">language=en</span><br><span class="line">deny=0.0.0.0/0.0.0.0</span><br><span class="line">permit=192.168.0.0/24</span><br><span class="line">disallow=all</span><br><span class="line">allow=h264,opus ; The protocols which you want to allow</span><br><span class="line">rtp_symmetric=yes</span><br><span class="line">force_rport=yes</span><br><span class="line">rewrite_contact=yes ; If you want to rewrite existing contact then keep &#x27;yes&#x27;</span><br><span class="line">direct_media=no ; We are using softphone and we don&#x27;t want users to share directly</span><br><span class="line">outbound_auth=101</span><br><span class="line">dtmf_mode=rfc4733 ; If you want to use the dial pad which uses DTMF protocol</span><br><span class="line">tos_audio=ef              ; Audio RTP</span><br><span class="line">tos_video=af41            ; Video RTP</span><br><span class="line">cos_audio=5               ; Audio RTP CoS</span><br><span class="line">cos_video=4               ; Video RTP CoS</span><br><span class="line">force_avp=yes</span><br><span class="line">media_encryption=no</span><br><span class="line">callerid=&quot;101&quot; &lt;101&gt;</span><br><span class="line"></span><br><span class="line">[101]</span><br><span class="line">type=aor</span><br><span class="line">qualify_frequency=30</span><br><span class="line">;contact=sip:101@192.168.0.104:5060</span><br><span class="line">max_contacts=1</span><br><span class="line">remove_existing=yes ;  If you want to rewrite existing contact then keep &#x27;yes&#x27;</span><br><span class="line"></span><br><span class="line">[101]</span><br><span class="line">type=auth</span><br><span class="line">auth_type=userpass</span><br><span class="line">username=101</span><br><span class="line">password=linphone_password1</span><br><span class="line"></span><br><span class="line">[102]</span><br><span class="line">auth=102 ; user as 102</span><br><span class="line">aors=102</span><br><span class="line">type=endpoint</span><br><span class="line">context=internal</span><br><span class="line">message_context=internal</span><br><span class="line">transport=udp_transport</span><br><span class="line">language=en</span><br><span class="line">deny=0.0.0.0/0.0.0.0</span><br><span class="line">permit=192.168.0.0/24</span><br><span class="line">disallow=all</span><br><span class="line">allow=h264,opus</span><br><span class="line">rtp_symmetric=yes</span><br><span class="line">force_rport=yes</span><br><span class="line">rewrite_contact=yes</span><br><span class="line">direct_media=no</span><br><span class="line">outbound_auth=102</span><br><span class="line">dtmf_mode=rfc4733</span><br><span class="line">tos_audio=ef              ; Audio RTP</span><br><span class="line">tos_video=af41            ; Video RTP</span><br><span class="line">cos_audio=5               ; Audio RTP CoS</span><br><span class="line">cos_video=4               ; Video RTP CoS</span><br><span class="line">force_avp=yes</span><br><span class="line">media_encryption=no</span><br><span class="line">callerid=&quot;102&quot; &lt;102&gt;</span><br><span class="line"></span><br><span class="line">[102]</span><br><span class="line">type=aor</span><br><span class="line">qualify_frequency=30</span><br><span class="line">;contact=sip:102@192.168.0.104:5060</span><br><span class="line">max_contacts=1</span><br><span class="line">remove_existing=yes</span><br><span class="line"></span><br><span class="line">[102]</span><br><span class="line">type=auth</span><br><span class="line">auth_type=userpass</span><br><span class="line">username=102</span><br><span class="line">password=linphone_password2</span><br><span class="line"></span><br><span class="line">[udp_transport]</span><br><span class="line">type=transport</span><br><span class="line">protocol=udp</span><br><span class="line">bind=0.0.0.0:5060</span><br><span class="line">local_net=192.168.0.0/24</span><br><span class="line">;external_media_address=192.168.0.104 ; Replace with your Asterisk server&#x27;s local IP</span><br><span class="line">;external_signaling_address=192.168.0.104 ; Replace with your Asterisk server&#x27;s local IP</span><br><span class="line">tos=cs3                   ; SIP signaling</span><br><span class="line">cos=3                     ; SIP signaling CoS</span><br><span class="line"></span><br><span class="line">allow_reload=false</span><br></pre></td></tr></table></figure>
+
+<p>extensions.conf:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">[internal]</span><br><span class="line">; Call handling for endpoints</span><br><span class="line">exten =&gt; 101,1,Dial(PJSIP/101,60)</span><br><span class="line">exten =&gt; 101,n,Hangup()</span><br><span class="line"></span><br><span class="line">exten =&gt; 102,1,Dial(PJSIP/102,60)</span><br><span class="line">exten =&gt; 102,n,Hangup()</span><br><span class="line"></span><br><span class="line">; Handle sending messages (plain text or file)</span><br><span class="line">; Extension 105 sends to 102</span><br><span class="line"></span><br><span class="line">; Handle sending messages (plain text)</span><br><span class="line">exten =&gt; 105,1,Verbose(1, &quot;Sending a message from 101 to 102&quot;)</span><br><span class="line"></span><br><span class="line"> same =&gt; n,Set(MESSAGE(body)=We will talk further on VoIP)</span><br><span class="line"></span><br><span class="line"> ;same =&gt; n,Set(MESSAGE(body)=Hey X1E, I hope you&#x27;re doing well. I&#x27;ll be sending some data shortly.)</span><br><span class="line"></span><br><span class="line"> ;same =&gt; n,Set(MESSAGE(body)=Any Message, you can also share the file as base64)</span><br><span class="line"></span><br><span class="line"> ;same =&gt; n,Set(MESSAGE(body)=$&#123;FILE(/home/dr4k3n/Downloads/alwoeenveoivr)&#125;)</span><br><span class="line"> ;same =&gt; n,Set(MESSAGE(body)=$&#123;FILE(/home/dr4k3n/Downloads/delervierveiv)&#125;)</span><br><span class="line"> ;same =&gt; n,Set(MESSAGE(body)=$&#123;FILE(/home/dr4k3n/Downloads/syveiubviesveve)&#125;)</span><br><span class="line"></span><br><span class="line"> same =&gt; n,MessageSend(pjsip:102@192.168.0.104:5060,sip:101@192.168.0.104:5060,sip:102@192.168.0.104:5060)  ; Send the message using MessageSend() through ASTERISK. </span><br><span class="line"></span><br><span class="line"> ;same =&gt; n,MessageSend(pjsip:102@192.168.0.101:5060,sip:101@192.168.0.104:5061,sip:102@192.168.0.101:5060)  ; Send the message using MessageSend() Directly through IP. &#123;Check the IP, username and port&#125;</span><br><span class="line"></span><br><span class="line"> same =&gt; n,GotoIf($[&quot;$&#123;MESSAGE_SEND_STATUS&#125;&quot; = &quot;SUCCESS&quot;]?sent:failed)</span><br><span class="line"> same =&gt; n(sent),Verbose(1, &quot;Message sent successfully from 101 to 102&quot;)</span><br><span class="line"> same =&gt; n,Hangup()</span><br><span class="line"> same =&gt; n(failed),Verbose(1, &quot;Failed to send message: $&#123;MESSAGE_SEND_STATUS&#125;&quot;)</span><br><span class="line"> same =&gt; n,Hangup()</span><br><span class="line"></span><br><span class="line">; Handle sending messages (plain text)</span><br><span class="line">exten =&gt; 106,1,Verbose(1, &quot;Sending a message from 102 to 101&quot;)</span><br><span class="line"> ;same =&gt; n,Set(MESSAGE(body)=I&#x27;m good, hope you&#x27;re doing well too. Don&#x27;t forget to do VC, GET AWAY ASAP.)</span><br><span class="line"> same =&gt; n,Set(MESSAGE(body)=Gotcha)</span><br><span class="line"></span><br><span class="line"> same =&gt; n,MessageSend(pjsip:101@192.168.0.104:5060,sip:102@192.168.0.104:5060,sip:101@192.168.0.104:5060)  ; Send the message using MessageSend() Through ASTERISK</span><br><span class="line"></span><br><span class="line"> ;same =&gt; n,MessageSend(pjsip:101@192.168.0.104:5061,sip:102@192.168.0.101:5060,sip:101@192.168.0.104:5061)  ; Send the message using MessageSend() Directly through IP</span><br><span class="line"></span><br><span class="line"> same =&gt; n,GotoIf($[&quot;$&#123;MESSAGE_SEND_STATUS&#125;&quot; = &quot;SUCCESS&quot;]?sent:failed)</span><br><span class="line"> same =&gt; n(sent),Verbose(1, &quot;Message sent successfully from 101 to 102&quot;)</span><br><span class="line"> same =&gt; n,Hangup()</span><br><span class="line"> same =&gt; n(failed),Verbose(1, &quot;Failed to send message: $&#123;MESSAGE_SEND_STATUS&#125;&quot;)</span><br><span class="line"> same =&gt; n,Hangup()</span><br><span class="line"></span><br><span class="line">; Handle SIP MESSAGE requests</span><br><span class="line">exten =&gt; _MESSAGE.,1,NoOp(Handling SIP MESSAGE)</span><br><span class="line"> same =&gt; n,Set(ACTUAL_TO=$&#123;CUT(MESSAGE(to),@,1)&#125;)  ; Extract the recipient</span><br><span class="line"> same =&gt; n,MessageSend($&#123;ACTUAL_TO&#125;,sip:$&#123;MESSAGE(from)&#125;)  ; Send the message</span><br><span class="line"> same =&gt; n,NoOp(Send status: $&#123;MESSAGE_SEND_STATUS&#125;)  ; Log the send status</span><br><span class="line"> same =&gt; n,GotoIf($[&quot;$&#123;MESSAGE_SEND_STATUS&#125;&quot;=&quot;SUCCESS&quot;]?success:fail)</span><br><span class="line"></span><br><span class="line">; On success</span><br><span class="line"> same =&gt; n(success),Verbose(1, Message sent successfully)</span><br><span class="line"> same =&gt; n,Hangup()</span><br><span class="line"></span><br><span class="line">; On failure</span><br><span class="line"> same =&gt; n(fail),Verbose(1, Failed to send message: $&#123;MESSAGE_SEND_STATUS&#125;)</span><br><span class="line"> same =&gt; n,Hangup()</span><br><span class="line"></span><br><span class="line">; Echo test</span><br><span class="line">exten =&gt; 200,1,Answer()</span><br><span class="line">exten =&gt; 200,n,Echo()</span><br><span class="line">exten =&gt; 200,n,Hangup()</span><br><span class="line"></span><br><span class="line">; Handle DTMF input</span><br><span class="line">exten =&gt; _X.,1,Set(CHANNEL(dtmfmode)=rfc2833)</span><br><span class="line">exten =&gt; _X.,n,Playback(digits/$&#123;EXTEN&#125;)</span><br><span class="line">exten =&gt; _X.,n,Hangup()</span><br></pre></td></tr></table></figure>
+
+<p>You configure it for the call, messages, files sharing, DTMF(Dial Pad).</p>
+<p>Let’s ensure Asterisk loads the ‘chan_pjsip’ module. We can do this by opening the ‘module.conf’ file and updating a specific line.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[modules]</span><br><span class="line">autoload=yes</span><br></pre></td></tr></table></figure>
+
+<p>Make sure autoload is yes.</p>
+<h3 id="Starting-Asterisk-Server"><a href="#Starting-Asterisk-Server" class="headerlink" title="Starting Asterisk Server"></a>Starting Asterisk Server</h3><p>Now we are done. Start Asterisk with:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> asterisk -r</span><br><span class="line"><span class="built_in">sudo</span> asterisk -rvvvvvvvvv</span><br></pre></td></tr></table></figure>
+
+<p>for verbosity -^</p>
+<p><img src="/images/posts/2025-voip/asterisk_server.png" alt="Asterisk Server"></p>
+<p>Now if you update in the files like pjsip.conf and extensions.conf then you have to run these commands to reload the configurations:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> asterisk -rx <span class="string">&quot;dialplan reload&quot;</span></span><br><span class="line"><span class="built_in">sudo</span> asterisk -rx <span class="string">&quot;pjsip reload&quot;</span></span><br><span class="line">OR</span><br><span class="line"><span class="built_in">sudo</span> asterisk -rx <span class="string">&quot;core reload&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>For a complete reload -^</p>
+<p>To manage the service:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> systemctl restart asterisk</span><br><span class="line"><span class="built_in">sudo</span> systemctl <span class="built_in">enable</span> asterisk</span><br><span class="line"><span class="built_in">sudo</span> systemctl status asterisk</span><br></pre></td></tr></table></figure>
+
+<p>If you run the <code>pjsip show endpoints</code> in the asterisk terminal</p>
+<p>You will see this as the output:</p>
+<p><img src="/images/posts/2025-voip/endpoints.png" alt="Endpoints"></p>
+<p>If the softphone is not yet connected, the status will show as “Unavailable.”</p>
+<p>Enable debugging by running it in asterisk terminal:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pjsip <span class="built_in">set</span> logger on</span><br><span class="line">rtp <span class="built_in">set</span> debug on</span><br></pre></td></tr></table></figure>
+
+<p>pjsip log:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">dr4k3n*CLI&gt; pjsip set logger on</span><br><span class="line">PJSIP Logging enabled</span><br><span class="line">&lt;--- Transmitting SIP request (421 bytes) to UDP:192.168.0.104:5060 ---&gt;</span><br><span class="line">OPTIONS sip:102@192.168.0.104:5060 SIP/2.0</span><br><span class="line">Via: SIP/2.0/UDP 192.168.0.104:5060;rport;branch=z9hG4bKPj78497896-090d-491a-babc-a1fdf67fa07d</span><br><span class="line">From: &lt;sip:101@192.168.0.104&gt;;tag=1b1058dd-748f-457c-a6b4-2f720ffb4865</span><br><span class="line">To: &lt;sip:102@192.168.0.104&gt;</span><br><span class="line">Contact: &lt;sip:101@192.168.0.104:5060&gt;</span><br><span class="line">Call-ID: b6032719-63e3-4cf7-8285-11064df2db92</span><br><span class="line">CSeq: 25292 OPTIONS</span><br><span class="line">Max-Forwards: 70</span><br><span class="line">User-Agent: Asterisk PBX 22.1.0</span><br><span class="line">Content-Length:  0</span><br></pre></td></tr></table></figure>
+
+<p>It continously sends SIP to establish the connection between Asterisk Server and Liphones.</p>
+<h3 id="Setting-Up-Linphone-Softphone"><a href="#Setting-Up-Linphone-Softphone" class="headerlink" title="Setting Up Linphone (Softphone)"></a>Setting Up Linphone (Softphone)</h3><p>We’ll use Linphone to connect with our Asterisk server. Other softphone alternatives include MicroSIP, Zoiper, and Mizudroid (Android).</p>
+<blockquote>
+<p>If Linphone doesn’t work on your Asterisk server machine, try Zoiper instead.</p>
+</blockquote>
+<p>Open Required Ports:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> ufw allow 5060/udp</span><br><span class="line"><span class="built_in">sudo</span> ufw allow 10000:20000/udp</span><br></pre></td></tr></table></figure>
+
+<p>Use the same version of Linphone on both Windows and Linux to avoid compatibility issues.</p>
+<p>For Ubuntu OS:</p>
+<p>~&#x2F;.config&#x2F;linphone&#x2F;linphonerc file:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br></pre></td><td class="code"><pre><span class="line">[messaging]</span><br><span class="line">use_cpim=0</span><br><span class="line">default_content_type=text/plain</span><br><span class="line"></span><br><span class="line">[misc]</span><br><span class="line">log_collection_upload_server_url=https://www.linphone.org:444/lft.php</span><br><span class="line">empty_chat_room_deletion=1</span><br><span class="line">prefer_basic_chat_room=1</span><br><span class="line">uuid=d6ef36a5-972b-0091-9814-1225cc002681</span><br><span class="line">hide_empty_chat_rooms=1</span><br><span class="line">file_transfer_server_url=https://www.linphone.org:444/lft.php</span><br><span class="line"></span><br><span class="line">[sound]</span><br><span class="line">ec_filter=MSWebRTCAEC</span><br><span class="line">playback_dev_id=PulseAudio Unknown: Built-in Audio Analog Stereo</span><br><span class="line">ringer_dev_id=PulseAudio Unknown: Built-in Audio Analog Stereo</span><br><span class="line">capture_dev_id=PulseAudio Unknown: Built-in Audio Analog Stereo</span><br><span class="line">media_dev_id=PulseAudio Unknown: Built-in Audio Analog Stereo</span><br><span class="line">mic_gain_db=0.000000</span><br><span class="line">playback_gain_db=0.000000</span><br><span class="line">remote_ring=/usr/share/sounds/linphone/ringback.wav</span><br><span class="line">disable_record_on_mute=0</span><br><span class="line">ec_delay=-1</span><br><span class="line"></span><br><span class="line">[app]</span><br><span class="line">record_aware=1</span><br><span class="line">auto_download_incoming_files_max_size=10000000</span><br><span class="line">auto_download_incoming_voice_recordings=1</span><br><span class="line">auto_download_incoming_icalendars=1</span><br><span class="line">sender_name_hidden_in_forward_message=0</span><br><span class="line"></span><br><span class="line">[rtp]</span><br><span class="line">accept_any_encryption=1</span><br><span class="line">audio_rtp_port=10000</span><br><span class="line">video_rtp_port=12000</span><br><span class="line">text_rtp_port=11078</span><br><span class="line">audio_jitt_comp=60</span><br><span class="line">video_jitt_comp=60</span><br><span class="line">nortp_timeout=30</span><br><span class="line">audio_adaptive_jitt_comp_enabled=1</span><br><span class="line">video_adaptive_jitt_comp_enabled=1</span><br><span class="line">audio_dscp=0xb8</span><br><span class="line">video_dscp=0x88</span><br><span class="line"></span><br><span class="line">[sip]</span><br><span class="line">chat_messages_aggregation_delay=1000</span><br><span class="line">chat_messages_aggregation=1</span><br><span class="line">zrtp_key_agreements_suites=MS_ZRTP_KEY_AGREEMENT_K255_KYB512</span><br><span class="line">root_ca=/usr/share/linphone/rootca.pem</span><br><span class="line">verify_server_certs=1</span><br><span class="line">verify_server_cn=1</span><br><span class="line">contact=sip:dr4k3n@unknown-host</span><br><span class="line">auto_send_ringing=1</span><br><span class="line">media_encryption=none</span><br><span class="line">supported=replaces, outbound, gruu, path, record-aware</span><br><span class="line">user_agent=Linphone Desktop/5.0.2 (dr4k3n) Ubuntu 24.04.1 LTS, Qt 5.15.13 LinphoneCore/5.2.0</span><br><span class="line">default_proxy=0</span><br><span class="line">guess_hostname=1</span><br><span class="line">inc_timeout=30</span><br><span class="line">in_call_timeout=0</span><br><span class="line">delayed_timeout=4</span><br><span class="line">register_only_when_network_is_up=1</span><br><span class="line">register_only_when_upnp_is_ok=1</span><br><span class="line">sip_transport=udp,tcp</span><br><span class="line">sip_port=5061</span><br><span class="line">sip_tcp_port=5070</span><br><span class="line">sip_tls_port=-1</span><br><span class="line">use_rfc2833=1</span><br><span class="line">use_info=0</span><br><span class="line">dscp=0x18</span><br><span class="line">ipv6_migration_done=1</span><br><span class="line">use_ipv6=0</span><br><span class="line">linphone_specs=ephemeral/1.1,groupchat/1.1,lime</span><br><span class="line">use_cpim=0</span><br><span class="line">default_content_type=text/plain</span><br><span class="line">media_encryption_mandatory=0</span><br><span class="line"></span><br><span class="line">[video]</span><br><span class="line">max_conference_size=vga</span><br><span class="line">displaytype=MSQOGL</span><br><span class="line">capture=1</span><br><span class="line">display=1</span><br><span class="line">main_display_mode=Hybrid</span><br><span class="line">other_display_mode=Hybrid</span><br><span class="line">size=svga</span><br><span class="line">show_local=0</span><br><span class="line">preset=default</span><br><span class="line">framerate=24.000000</span><br><span class="line"></span><br><span class="line">[ui]</span><br><span class="line">use_qrcode=0</span><br><span class="line">rc_version=5</span><br><span class="line">read_and_agree_terms_and_privacy=1</span><br><span class="line">logs_enabled=1</span><br><span class="line">exit_on_close=1</span><br><span class="line">show_tel_keypad_automatically=0</span><br><span class="line">show_take_screenshot_button_in_call=1</span><br><span class="line"></span><br><span class="line">[net]</span><br><span class="line">friendlist_subscription_enabled=1</span><br><span class="line">mtu=1300</span><br><span class="line">adaptive_rate_control=1</span><br><span class="line">download_bw=4000</span><br><span class="line">upload_bw=4000</span><br><span class="line">nat_policy_ref=USbqGgS2ivIxLBv</span><br><span class="line"></span><br><span class="line">[lime]</span><br><span class="line">enabled=1</span><br><span class="line">last_update_time=1734544797</span><br><span class="line"></span><br><span class="line">[account_creator]</span><br><span class="line">url=http://fs-test-sandbox.linphone.org/flexiapi/api/</span><br><span class="line"></span><br><span class="line">[audio_codec_0]</span><br><span class="line">mime=opus</span><br><span class="line">rate=48000</span><br><span class="line">channels=2</span><br><span class="line">enabled=1</span><br><span class="line">recv_fmtp=useinbandfec=1</span><br><span class="line">bitrate=64000</span><br><span class="line"></span><br><span class="line">[video_codec_0]</span><br><span class="line">mime=VP8</span><br><span class="line">rate=90000</span><br><span class="line">enabled=0</span><br><span class="line"></span><br><span class="line">[video_codec_1]</span><br><span class="line">mime=H264</span><br><span class="line">rate=90000</span><br><span class="line">enabled=1</span><br><span class="line">recv_fmtp=profile-level-id=42801F</span><br><span class="line">bitrate=1500000</span><br><span class="line"></span><br><span class="line">[proxy_default_values]</span><br><span class="line">avpf=1</span><br><span class="line">dial_escape_plus=0</span><br><span class="line">publish=1</span><br><span class="line">quality_reporting_enabled=1</span><br><span class="line">quality_reporting_interval=180</span><br><span class="line">reg_expires=600</span><br><span class="line">reg_sendregister=1</span><br><span class="line">quality_reporting_collector=sip:voip-metrics@sip.linphone.org;transport=tls</span><br><span class="line">reg_identity=sip:?@sip.linphone.org</span><br><span class="line">reg_proxy=&lt;sip:sip.linphone.org;transport=tls&gt;</span><br><span class="line">nat_policy_ref=nat_policy_default_values</span><br><span class="line">realm=sip.linphone.org</span><br><span class="line">contact_parameters=message-expires=604800</span><br><span class="line">conference_factory_uri=sip:conference-factory@sip.linphone.org</span><br><span class="line">audio_video_conference_factory_uri=sip:videoconference-factory@sip.linphone.org</span><br><span class="line">cpim_in_basic_chat_rooms_enabled=1</span><br><span class="line">rtp_bundle=1</span><br><span class="line">lime_server_url=https://lime.linphone.org/lime-server/lime-server.php</span><br><span class="line"></span><br><span class="line">[assistant]</span><br><span class="line">algorithm=SHA-256</span><br><span class="line">password_max_length=-1</span><br><span class="line">password_min_length=1</span><br><span class="line">username_length=-1</span><br><span class="line">username_max_length=64</span><br><span class="line">username_min_length=1</span><br><span class="line">username_regex=^[a-z0-9+_.\-]*$</span><br><span class="line">domain=sip.linphone.org</span><br><span class="line">xmlrpc_url=https://subscribe.linphone.org:444/wizard.php</span><br><span class="line"></span><br><span class="line">[nat_policy_default_values]</span><br><span class="line">protocols=stun,ice</span><br><span class="line">ice_enabled=0</span><br><span class="line"></span><br><span class="line">[nat_policy_0]</span><br><span class="line">ref=USbqGgS2ivIxLBv</span><br><span class="line"></span><br><span class="line">[auth_info_0]</span><br><span class="line">username=101</span><br><span class="line">ha1=91fae9b1f17bfe1f0aac6af1f16197f0</span><br><span class="line">realm=asterisk</span><br><span class="line">domain=192.168.0.104</span><br><span class="line">algorithm=MD5</span><br><span class="line">available_algorithms=MD5</span><br><span class="line"></span><br><span class="line">[proxy_0]</span><br><span class="line">reg_proxy=&lt;sip:101@192.168.0.104:5060;transport=udp&gt;</span><br><span class="line">reg_identity=sip:101@192.168.0.104:5060</span><br><span class="line">realm=asterisk</span><br><span class="line">contact_parameters=message-expires=604800</span><br><span class="line">quality_reporting_collector=sip:voip-metrics@sip.linphone.org;transport=tls</span><br><span class="line">quality_reporting_enabled=1</span><br><span class="line">quality_reporting_interval=180</span><br><span class="line">reg_expires=600</span><br><span class="line">reg_sendregister=1</span><br><span class="line">publish=1</span><br><span class="line">avpf=1</span><br><span class="line">avpf_rr_interval=1</span><br><span class="line">dial_escape_plus=0</span><br><span class="line">use_dial_prefix_for_calls_and_chats=1</span><br><span class="line">privacy=32768</span><br><span class="line">push_notification_allowed=0</span><br><span class="line">remote_push_notification_allowed=0</span><br><span class="line">cpim_in_basic_chat_rooms_enabled=1</span><br><span class="line">idkey=proxy_config_oNbn27hGUzwy2mr</span><br><span class="line">publish_expires=3600</span><br><span class="line">conference_factory_uri=sip:conference-factory@sip.linphone.org</span><br><span class="line">rtp_bundle=1</span><br><span class="line">rtp_bundle_assumption=0</span><br><span class="line">lime_server_url=https://lime.linphone.org/lime-server/lime-server.php</span><br></pre></td></tr></table></figure>
+
+<p>If possible keep the configuration same for both the Linphone.</p>
+<p>Configure Linphone settings to match your SIP user and network setup. Here’s how the user and network settings should look:</p>
+<p><img src="/images/posts/2025-voip/sip_user.png" alt="SIP User"></p>
+<p><img src="/images/posts/2025-voip/network.png" alt="Network"></p>
+<p>Mostly similar with different port on Windows Linphone, Before starting the call make sure that SIP users and Asterisk server contains the same IP address.</p>
+<p>If Ubuntu Linphone doesn’t connect automatically, use a static client first. You can temporarily comment out the contact&#x3D; line in pjsip.conf to help establish the connection. Once connected, it’ll switch to dynamic mode automatically.</p>
+<p>You’ll know it worked when both Linphones show a green “Online” indicator.</p>
+<p><img src="/images/posts/2025-voip/available.png" alt="avail screen"></p>
+<h3 id="Making-the-Call"><a href="#Making-the-Call" class="headerlink" title="Making the Call"></a>Making the Call</h3><p>Establish the Call from user 101 by dialing 102 from dial pad and you will get the call UI like this:</p>
+<p><img src="/images/posts/2025-voip/call.png" alt="call"></p>
+<p>After making the call, you can set the <code>rtp debug on</code> which will show you rtp packets which help us to identify whether the call has been connected successfully or not as shown below:</p>
+<p><img src="/images/posts/2025-voip/rtp.png" alt="rtp"></p>
+<p>Success! You’re now sending voice over the network using Opus codec. For video calls, Linphone uses H.264.</p>
+<p>You can also send messages by dialing different users like 105 or 106 (as defined in extensions.conf).</p>
+<h3 id="Deep-Dive-with-Wireshark"><a href="#Deep-Dive-with-Wireshark" class="headerlink" title="Deep Dive with Wireshark"></a>Deep Dive with Wireshark</h3><p>Use Wireshark to inspect:</p>
+<ul>
+<li><p>SIP signaling</p>
+</li>
+<li><p>RTP media packets</p>
+</li>
+<li><p>Opus&#x2F;H.264 streams</p>
+</li>
+<li><p>DTMF signals</p>
+</li>
+</ul>
+<p>This is where it gets exciting for CTF enthusiasts. Capture the VoIP traffic and create puzzles around:</p>
+<ul>
+<li><p>Voice recovery</p>
+</li>
+<li><p>DTMF-based flag inputs</p>
+</li>
+<li><p>Hidden messages in SIP headers</p>
+</li>
+</ul>
+<p>Want an example?<br>Check out my VoIP-based CTF challenge write-up <a target="_blank" rel="noopener" href="https://github.com/g4rud4kun/Challenges-Wu/blob/main/American%20Spy/README.md">here</a> where you can get to see the SIP, RTP, H.264, Opus, DTMF packets.</p>
+<h3 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h3><p>Setting up VoIP might sound intimidating at first, but with Asterisk and Linphone, it’s totally doable—even on a basic setup. Whether you’re learning about network protocols, building CTF challenges, or just want to experiment with audio&#x2F;video over IP—VoIP is a great playground.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+      
+      
+      
+      
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/networking/" rel="tag">networking</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/voip/" rel="tag">voip</a></li><li class="article-tag-list-item" data-aos="zoom-in"><a class="article-tag-list-link" href="/tags/wireshark/" rel="tag">wireshark</a></li></ul>
+
+
+    </footer>
+  </div>
+  
+  <nav id="article-nav" data-aos="fade-up">
+    
+    
+    <div class="article-nav-link-wrap article-nav-link-right">
+      
+        <img data-src="/images/posts/2025-nahamcon/nahamcon.jpg" data-sizes="auto" alt="NahamCon CTF 2025" class="lazyload">
+      
+      <a href="/2025/05/28/NahamCon-CTF-2025/"></a>
+      <div class="article-nav-caption">Older</div>
+      <h3 class="article-nav-title">
+        
+          NahamCon CTF 2025
+        
+      </h3>
+    </div>
+    
+  </nav>
+
+
+</article>
+
+
+
+
+
+
+</section>
+        </div>
+        
+        
+        <footer id="footer">
+  <div style="width: 100%; overflow: hidden">
+    <div class="footer-line"></div>
+  </div>
+  <div id="footer-info">
+    
+    <div>
+      <span class="icon-copyright"></span>
+      2024-2025
+      <span class="footer-info-sep rotate"></span>
+      Harsh
+    </div>
+    
+    
+      <div>
+        <span class="icon-brush"></span>
+        26.1k
+        &nbsp;|&nbsp;
+        <span class="icon-coffee"></span>
+        02:40
+      </div>
+    
+    
+    
+    
+  </div>
+</footer>
+
+        
+          <div class="sidebar-top">
+            <div class="sidebar-top-taichi rotate"></div>
+            <div class="arrow-up"></div>
+          </div>
+        
+        <div id="mask" class="hide"></div>
+      </div>
+      <nav id="mobile-nav">
+  <div class="sidebar-wrap">
+    
+      <div class="sidebar-toc-sidebar"><div class="sidebar-toc">
+  <h3 class="toc-title">Contents</h3>
+  <div class="sidebar-toc-wrapper toc-div-class" >
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Voice-over-Internet-Protocol"><span class="toc-number">1.</span> <span class="toc-text">Voice over Internet Protocol</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#What-is-VoIP"><span class="toc-number">1.1.</span> <span class="toc-text">What is VoIP?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#What-You%E2%80%99ll-Need"><span class="toc-number">1.2.</span> <span class="toc-text">What You’ll Need</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-Up-Asterisk-Server-on-Ubuntu"><span class="toc-number">1.3.</span> <span class="toc-text">Setting Up Asterisk Server on Ubuntu</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Configuring-Asterisk"><span class="toc-number">1.4.</span> <span class="toc-text">Configuring Asterisk</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Starting-Asterisk-Server"><span class="toc-number">1.5.</span> <span class="toc-text">Starting Asterisk Server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Setting-Up-Linphone-Softphone"><span class="toc-number">1.6.</span> <span class="toc-text">Setting Up Linphone (Softphone)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Making-the-Call"><span class="toc-number">1.7.</span> <span class="toc-text">Making the Call</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deep-Dive-with-Wireshark"><span class="toc-number">1.8.</span> <span class="toc-text">Deep Dive with Wireshark</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Conclusion"><span class="toc-number">1.9.</span> <span class="toc-text">Conclusion</span></a></li></ol></li></ol>
+      
+  </div>
+</div>
+</div>
+      <div class="sidebar-common-sidebar hidden"><div class="sidebar-author">
+  <img data-src="/avatar/saturo-running-v1-6-2.gif" data-sizes="auto" alt="Harsh" class="lazyload">
+  <div class="sidebar-author-name">Harsh</div>
+  <div class="sidebar-description">20 | CTF Player | IN</div>
+</div>
+<div class="sidebar-state">
+  <div class="sidebar-state-article">
+    <div>Posts</div>
+    <div class="sidebar-state-number">8</div>
+  </div>
+  <div class="sidebar-state-category">
+    <div>Categories</div>
+    <div class="sidebar-state-number">2</div>
+  </div>
+  <div class="sidebar-state-tag">
+    <div>Tags</div>
+    <div class="sidebar-state-number">14</div>
+  </div>
+</div>
+<div class="sidebar-social">
+  
+    <div class="icon-email sidebar-social-icon">
+      <a href=mailto:notsoharsh13@gmail.com itemprop="url" target="_blank" aria-label="email" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-github sidebar-social-icon">
+      <a href=https://github.com/g4rud4kun itemprop="url" target="_blank" aria-label="github" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-twitter sidebar-social-icon">
+      <a href=https://x.com/g4rud4kun itemprop="url" target="_blank" aria-label="twitter" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-linkedin sidebar-social-icon">
+      <a href=https://www.linkedin.com/in/harsh-gupta-b5792a280 itemprop="url" target="_blank" aria-label="linkedin" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+    <div class="icon-discord sidebar-social-icon">
+      <a href=https://discordapp.com/users/509689286589939713 itemprop="url" target="_blank" aria-label="discord" rel="noopener external nofollow noreferrer"></a>
+    </div>
+  
+</div>
+<div class="sidebar-menu">
+  
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/" aria-label="Home"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Home</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/archives" aria-label="Archives"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">Archives</div>
+      </div>
+    
+      <div class="sidebar-menu-link-wrap">
+        <a class="sidebar-menu-link-dummy" href="/about" aria-label="About"></a>
+        <div class="sidebar-menu-icon icon rotate">
+          &#xe62b;
+        </div>
+        <div class="sidebar-menu-link">About</div>
+      </div>
+    
+  
+</div>
+</div>
+    
+  </div>
+  
+    <div class="sidebar-btn-wrapper">
+      <div class="sidebar-toc-btn current"></div>
+      <div class="sidebar-common-btn"></div>
+    </div>
+  
+</nav>
+
+    </div>
+    
+      <div class="site-search">
+        <div class="reimu-popup popup">
+          <div class="reimu-search">
+            <div class="reimu-search-input-icon"></div>
+            <div class="reimu-search-input" id="reimu-search-input"></div>
+            <div class="popup-btn-close"></div>
+          </div>
+          <div class="reimu-results">
+            <div id="reimu-stats"></div>
+            <div id="reimu-hits"></div>
+            <div id="reimu-pagination" class="reimu-pagination"></div>
+          </div>
+          <img class="reimu-bg" src="/images/Satoru-Gojo-White-Hair-BlindfoldSatoru-Gojo.png"/>
+        </div>
+      </div>
+    
+    
+<script src="https://npm.webcache.cn/lazysizes@5.3.2/lazysizes.min.js" integrity="sha384-3gT&#x2F;vsepWkfz&#x2F;ff7PpWNUeMzeWoH3cDhm&#x2F;A8jM7ouoAK0&#x2F;fP&#x2F;9bcHHR5kHq2nf+e" crossorigin="anonymous"></script>
+
+
+<script src="https://npm.webcache.cn/clipboard@2.0.11/dist/clipboard.min.js" integrity="sha384-J08i8An&#x2F;QeARD9ExYpvphB8BsyOj3Gh2TSh1aLINKO3L0cMSH2dN3E22zFoXEi0Q" crossorigin="anonymous"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+  
+<script src="/js/aos.js"></script>
+
+  <script>
+    var aosInit = () => {
+      AOS.init({
+        duration: 1000,
+        easing: "ease",
+        once: true,
+        offset: 50,
+      });
+    };
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', aosInit);
+    } else {
+      aosInit();
+    }
+  </script>
+
+
+
+<script src="/js/pjax_script.js" data-pjax></script>
+
+
+
+  
+<script src="/js/generator_search.js" defer></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="lazy-script">
+  <div>
+    
+      
+      
+      <script data-pjax>
+        window.REIMU_POST = {
+          author: "Harsh",
+          title: "VoIP Setup for Beginners: Daily Use, CTF Challenges, and Wireshark Deep Dive",
+          url: "https://g4rud4kun.github.io/2025/05/28/VoIP-Setup-for-Beginners-Daily-Use-CTF-Challenges-and-Wireshark-Deep-Dive/",
+          excerpt: "",
+          description: "",
+          stripContent: "Voice over Internet ProtocolHola folks!I’m Harsh aka G4RUD4, and today I’m sharing a beginner-friendly guide to setting up a VoIP environment. Whether you’re looking to experiment with VoIP tech, dive into packet-level analysis using Wireshark, or bu",
+          date: "Wed May 28 2025 20:15:00 GMT+0530",
+          updated: "Fri May 30 2025 02:40:06 GMT+0530",
+          cover: "/images/posts/2025-voip/voip.png",
+        };
+      </script>
+       
+    
+    
+      
+        
+<script src="/js/insert_highlight.js" data-pjax></script>
+
+        
+      
+    
+    
+      <script type="module" data-pjax>
+        const PhotoSwipeLightbox = (await safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe-lightbox.esm.min.js", "sha384-DiL6M/gG+wmTxmCRZyD1zee6lIhawn5TGvED0FOh7fXcN9B0aZ9dexSF/N6lrZi/")).default;
+        
+        const pswp = () => {
+          if (_$$('.article-entry a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-entry',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          if(_$$('.article-gallery a.article-gallery-item').length > 0) {
+            new PhotoSwipeLightbox({
+              gallery: '.article-gallery',
+              children: 'a.article-gallery-item',
+              pswpModule: () => safeImport("https://npm.webcache.cn/photoswipe@5.4.4/dist/photoswipe.esm.min.js", "sha384-WkkO3GCmgkC3VQWpaV8DqhKJqpzpF9JoByxDmnV8+oTJ7m3DfYEWX1fu1scuS4+s")
+            }).init();
+          }
+          window.lightboxStatus = 'done';
+          window.removeEventListener('lightbox:ready', pswp);
+        }
+        if(window.lightboxStatus === 'ready') {
+          pswp()
+        } else {
+          window.addEventListener('lightbox:ready', pswp);
+        }
+      </script>
+      
+
+
+
+
+
+
+
+
+    
+  </div>
+</div>
+
+
+  <script>
+    console.log(String.raw`%c 
+ ______     ______     __     __    __     __  __    
+/\  == \   /\  ___\   /\ \   /\ "-./  \   /\ \/\ \   
+\ \  __<   \ \  __\   \ \ \  \ \ \-./\ \  \ \ \_\ \  
+ \ \_\ \_\  \ \_____\  \ \_\  \ \_\ \ \_\  \ \_____\ 
+  \/_/ /_/   \/_____/   \/_/   \/_/  \/_/   \/_____/ 
+                                                  
+`,'color: #ff5252;')
+    console.log('%c Theme.Reimu v' + '1.3.0' + ' %c https://github.com/D-Sketon/hexo-theme-reimu ', 'color: white; background: #ff5252; padding:5px 0;', 'padding:4px;border:1px solid #ff5252;')
+  </script>
+  
+
+
+
+
+
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
+  }
+</script>
+
+
+
+  
+    
+<script src="https://npm.webcache.cn/katex@0.16.11/dist/katex.min.js" integrity="sha384-7zkQWkzuo3B5mTepMUcHkMB5jZaolc2xDwL6VFqjFALcbeS9Ggm&#x2F;Yr2r3Dy4lfFg" crossorigin="anonymous" defer data-pjax></script>
+
+    
+<script src="https://npm.webcache.cn/katex@0.16.11/dist/contrib/auto-render.min.js" integrity="sha384-43gviWU0YVjaDtb&#x2F;GhzOouOXtZMP&#x2F;7XUzwPTstBeZFe&#x2F;+rCMvRwr4yROQP43s0Xk" crossorigin="anonymous" defer onload="renderMathInElement(document.body, {delimiters: [{left: &#39;$$&#39;, right: &#39;$$&#39;, display: true},{left: &#39;$&#39;, right: &#39;$&#39;, display: false}]});" data-pjax></script>
+
+  
+
+
+
+
+
+  </body>
+  </html>
+
